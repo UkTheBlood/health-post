@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getDetailPost } from '../api/post/postapi';
 
 function Detail() {
   const param = useParams(); // param -> url의 id(string)
+  const navigate = useNavigate();
 
   const [contentState, setContentState] = useState(false);
 
@@ -37,7 +38,7 @@ function Detail() {
             {/* 댓글 수 백엔드에 없음 */}
           </StDivComment>
           <StDivContentButton>
-            <StBtnView> 전체 목록 보기 </StBtnView>
+            <StBtnView onClick={() => navigate('/')}> 전체 목록 보기 </StBtnView>
             <StBtnPostUpdate> 수정 </StBtnPostUpdate>
             <StBtnPostDelete> 삭제 </StBtnPostDelete>
           </StDivContentButton>

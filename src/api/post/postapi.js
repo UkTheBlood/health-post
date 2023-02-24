@@ -25,7 +25,8 @@ const addPost = async (newPost) => {
 
 // 게시물 삭제
 const deletePost = async (id) => {
-  await axios.delete(`http://13.209.86.39:3003/api/posts${id}`); //  "/api/posts/:postId"
+  const postId = Number(id)
+  await axios.delete(`http://13.209.86.39:3003/api/posts/${postId}`); //  "/api/posts/:postId"
 };
 
 // 게시물 수정
