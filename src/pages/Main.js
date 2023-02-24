@@ -1,8 +1,14 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { getPosts } from '../api/post/postapi';
 
 function Main() {
+  const { isLoading, isError, data } = useQuery('posts', getPosts);
+  if(isLoading) return <div>Loading</div>
+  if(isError) return <div>Error</div>
+
   return (
     <StDivWrap>
       <div>
@@ -14,7 +20,16 @@ function Main() {
         </StDivWrite>
       </div>
       <div>
-        <h1>게시물 나열</h1>
+        <div>
+          {data.map((posts) => {
+            return (
+              <StDivContainer key={posts.postId}>
+                <StPTitle>{posts.title}</StPTitle>
+                <StPLike>👍 {posts.likes}</StPLike>
+              </StDivContainer>
+            );
+          })}
+        </div>
       </div>
     </StDivWrap>
   );
@@ -29,7 +44,7 @@ const StDivWrap = styled.div`
 const StDivWrite = styled.div`
   height: 50px;
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 80px;
 `;
 const StPPost = styled.p`
   margin-right: auto;
@@ -50,3 +65,20 @@ const StPWrite = styled.p`
   font-size: 18px;
   background-color: antiquewhite;
 `;
+const StDivContainer = styled.div`
+  width: 600px;
+  height: 40px;
+  margin: 40px auto 0px auto;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 20px;
+
+  display: flex;
+`
+const StPTitle = styled.p`
+  margin-right: auto;
+  line-height: 10px;
+`
+const StPLike = styled.p`
+  line-height: 10px;
+`

@@ -7,7 +7,7 @@ import axios from 'axios';
 // 게시물 조회
 const getPosts = async () => {
   const response = await axios.get('http://13.209.86.39:3000/api/posts'); //  "/api/posts"
-  return response.data;
+  return response.data.posts;
 };
 
 // 게시물 추가
