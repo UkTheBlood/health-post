@@ -29,8 +29,12 @@ const deletePost = async (id) => {
 };
 
 // 게시물 수정
-// const updatePost = async () => {
-//   await
-// }
+const updatePost = async (id, inputTitle, inputContent) => {
+  console.log('id: ', id)    // 31
+  await axios.put(`http://13.209.86.39:3003/api/posts/${id.id}`, {
+    title : inputTitle,
+    content : inputContent,
+  })
+}
 
-export { getPosts, addPost, deletePost, getDetailPost };
+export { getPosts, addPost, deletePost, getDetailPost, updatePost };
