@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { getDetailPost } from '../api/post/postapi';
+import { addPost, deletePost, getDetailPost } from '../api/post/postapi';
+
+
+// React => useMutation => await Axios => BE(Error) => await Axios => useMutation
+
 
 function Detail() {
   const param = useParams(); // param -> url의 id(string)
@@ -11,14 +15,33 @@ function Detail() {
   const [contentState, setContentState] = useState(false);
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
-  const { isLoading, isError, data } = useQuery('detailposts', () => getDetailPost(param.id));
+  const { isLoading, isError, data } = useQuery('detailposts', () =>
+    getDetailPost(param.id)
+  );
 
   // React Query 부분
   const queryClient = useQueryClient();
+  const mutation = useMutation(deletePost, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('posts')
+    },
+    onError: () => {
+      alert(isError)
+    }
+  })
+
+  // 삭제 버튼
+  const deleteButton = (id) => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      navigate('/');
+      mutation.mutate(id)
+    } else {
+      return
+    }
+  };
 
   if (isLoading === true) return <h1>isLoading...</h1>;
   if (isError) return <div>Error</div>;
-
 
   return (
     <>
@@ -38,9 +61,15 @@ function Detail() {
             {/* 댓글 수 백엔드에 없음 */}
           </StDivComment>
           <StDivContentButton>
-            <StBtnView onClick={() => navigate('/')}> 전체 목록 보기 </StBtnView>
+            <StBtnView onClick={() => navigate('/')}>
+              {' '}
+              전체 목록 보기{' '}
+            </StBtnView>
             <StBtnPostUpdate> 수정 </StBtnPostUpdate>
-            <StBtnPostDelete> 삭제 </StBtnPostDelete>
+            <StBtnPostDelete onClick={() => deleteButton(data.postId)}>
+              {' '}
+              삭제{' '}
+            </StBtnPostDelete>
           </StDivContentButton>
         </StDivContentWrap>
       </div>

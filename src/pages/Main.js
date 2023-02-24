@@ -6,13 +6,6 @@ import { addPost, getPosts } from '../api/post/postapi';
 
 function Main() {
   const { isLoading, isError, data } = useQuery('posts', getPosts);
-  
-  // const queryClient = useQueryClient();
-  // const mutation = useMutation(addPost, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries("")
-  //   }
-  // })
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;

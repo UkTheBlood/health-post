@@ -17,7 +17,6 @@ const getDetailPost = async (id) => {
   return detailresponse.data.post
 }
 
-
 // 게시물 추가
 const addPost = async (newPost) => {
   await axios.post('http://13.209.86.39:3003/api/posts', newPost); //  "/api/posts"
