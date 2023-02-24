@@ -1,11 +1,19 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getPosts } from '../api/post/postapi';
+import { addPost, getPosts } from '../api/post/postapi';
 
 function Main() {
   const { isLoading, isError, data } = useQuery('posts', getPosts);
+  
+  // const queryClient = useQueryClient();
+  // const mutation = useMutation(addPost, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("")
+  //   }
+  // })
+
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
 

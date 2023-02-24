@@ -13,8 +13,7 @@ const getPosts = async () => {
 // 상세 게시물 조회
 const getDetailPost = async (id) => {
   const postId = Number(id)
-  const detailresponse = await axios.get(`http://13.209.86.39:3003/api/posts/${postId}`);
-  console.log("detailresponse", detailresponse)
+  const detailresponse = await axios.get(`http://13.209.86.39:3003/api/posts/${postId}`);   // "api/posts/:${postId}"
   return detailresponse.data.post
 }
 

@@ -22,7 +22,7 @@ function Write() {
   const queryClient = useQueryClient();
   const mutation = useMutation(addPost, {
     onSuccess: () => {
-      queryClient.invalidateQueries('');
+      queryClient.invalidateQueries('posts');
     },
   });
 
