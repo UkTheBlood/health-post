@@ -6,18 +6,27 @@ import axios from 'axios';
 
 // 게시물 조회
 const getPosts = async () => {
-  const response = await axios.get('http://13.209.86.39:3000/api/posts'); //  "/api/posts"
+  const response = await axios.get('http://13.209.86.39:3003/api/posts'); //  "/api/posts"
   return response.data.posts;
 };
 
+// 상세 게시물 조회
+const getDetailPost = async (id) => {
+  const postId = Number(id)
+  const detailresponse = await axios.get(`http://13.209.86.39:3003/api/posts/${postId}`);
+  console.log("detailresponse", detailresponse)
+  return detailresponse.data.post
+}
+
+
 // 게시물 추가
 const addPost = async (newPost) => {
-  await axios.post('http://13.209.86.39:3000/api/posts', newPost); //  "/api/posts"
+  await axios.post('http://13.209.86.39:3003/api/posts', newPost); //  "/api/posts"
 };
 
 // 게시물 삭제
 const deletePost = async (id) => {
-  await axios.delete(`http://13.209.86.39:3000/api/posts${id}`); //  "/api/posts/:postId"
+  await axios.delete(`http://13.209.86.39:3003/api/posts${id}`); //  "/api/posts/:postId"
 };
 
 // 게시물 수정
@@ -25,4 +34,4 @@ const deletePost = async (id) => {
 //   await
 // }
 
-export { getPosts, addPost, deletePost };
+export { getPosts, addPost, deletePost, getDetailPost };

@@ -6,8 +6,8 @@ import { getPosts } from '../api/post/postapi';
 
 function Main() {
   const { isLoading, isError, data } = useQuery('posts', getPosts);
-  if(isLoading) return <div>Loading</div>
-  if(isError) return <div>Error</div>
+  if (isLoading) return <div>Loading</div>;
+  if (isError) return <div>Error</div>;
 
   return (
     <StDivWrap>
@@ -23,10 +23,12 @@ function Main() {
         <div>
           {data.map((posts) => {
             return (
-              <StDivContainer key={posts.postId}>
-                <StPTitle>{posts.title}</StPTitle>
-                <StPLike>👍 {posts.likes}</StPLike>
-              </StDivContainer>
+              <Link to={`/detail/${posts.postId}`} key={posts.postId}>
+                <StDivContainer>
+                  <StPTitle>{posts.title}</StPTitle>
+                  <StPLike>👍 {posts.likes}</StPLike>
+                </StDivContainer>
+              </Link>
             );
           })}
         </div>
@@ -64,6 +66,7 @@ const StPWrite = styled.p`
   text-align: center;
   font-size: 18px;
   background-color: antiquewhite;
+  border-radius: 10px;
 `;
 const StDivContainer = styled.div`
   width: 600px;
@@ -74,11 +77,15 @@ const StDivContainer = styled.div`
   border-radius: 20px;
 
   display: flex;
-`
+`;
 const StPTitle = styled.p`
   margin-right: auto;
-  line-height: 10px;
-`
+  font-size: 22px;
+  line-height: 0px;
+  color: black;
+`;
 const StPLike = styled.p`
-  line-height: 10px;
-`
+  line-height: 0px;
+  font-size: 20px;
+  color: black;
+`;
