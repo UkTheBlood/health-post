@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,6 +17,8 @@ function Comments() {
   });
 
   const [content, setContent] = useState('');
+
+  const [commentState, setCommentState] = useState(false);
 
   const onChangeCommentHandler = (e) => {
     setContent(e.target.value);
@@ -82,19 +84,22 @@ function Comments() {
         </StBtnAddcomment>
       </StDivAddcomment>
       {/* 댓글들 */}
-      <div>
+      <StDivCommentsWrap>
         {data.map((comments) => {
           return (
-            <div key={comments.commentId}>
-              <p>
-                닉네임 : {comments.nickname} 댓글 : {comments.content}
-              </p>
-              <button>수정</button>
-              <button onClick={() => deleteCommentButton(comments.commentId)}>삭제</button>
-            </div>
+            <StDivCommentContainer key={comments.commentId}>
+              <StPNickname>{comments.nickname} : </StPNickname>
+              <StPComment>{comments.content}</StPComment>
+              <StBtnUpdateComment>수정</StBtnUpdateComment>
+              <StBtnUpdateComment
+                onClick={() => deleteCommentButton(comments.commentId)}
+              >
+                삭제
+              </StBtnUpdateComment>
+            </StDivCommentContainer>
           );
         })}
-      </div>
+      </StDivCommentsWrap>
     </StDivWrap>
   );
 }
@@ -132,4 +137,28 @@ const StBtnAddcomment = styled.button`
   border-radius: 10px;
   border: none;
   background-color: #9dc08b;
+`;
+const StDivCommentsWrap = styled.div`
+  margin-top: 20px;
+  padding: 10px;
+`;
+const StDivCommentContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const StPNickname = styled.p`
+  width: 70px;
+  text-align: center;
+`;
+const StPComment = styled.p`
+  width: 300px;
+  margin: 10px;
+`;
+const StBtnUpdateComment = styled.button`
+  width: 70px;
+  height: 30px;
+  background-color: #e8d5c4;
+  border: none;
+  border-radius: 10px;
+  margin-left: auto;
 `;
