@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { addPost, deletePost, getDetailPost, updatePost } from '../api/post/postapi';
+import {
+  addPost,
+  deletePost,
+  getDetailPost,
+  updatePost,
+} from '../api/post/postapi';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
@@ -41,8 +46,8 @@ function Detail() {
   const updatemutation = useMutation(updatePost, {
     onSuccess: () => {
       queryClient.invalidateQueries('detailposts');
-    }
-  })
+    },
+  });
 
   // 삭제 버튼
   const deleteButton = (id) => {
@@ -56,10 +61,17 @@ function Detail() {
 
   // 저장 버튼
   const saveButton = (id, inputTitle, inputContent) => {
-    setContentState(false);
-    // console.log(inputTitle, inputContent)
-    updatemutation.mutate({id, inputTitle, inputContent});
-  }
+    if (inputTitle !== '' && inputContent !== '') {
+      if (window.confirm('정말 수정하시겠습니까?') === true) {
+        setContentState(false);
+        updatemutation.mutate({ id, inputTitle, inputContent });
+      } else {
+        return;
+      }
+    } else {
+      alert('제목과 내용을 모두 입력해주세요!');
+    }
+  };
 
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
@@ -118,7 +130,13 @@ function Detail() {
               />
             </StDivContent>
             <StDivContentButton>
-              <StBtnSave onClick={() => saveButton(data.postId, inputTitle, inputContent)}>저장</StBtnSave>
+              <StBtnSave
+                onClick={() =>
+                  saveButton(data.postId, inputTitle, inputContent)
+                }
+              >
+                저장
+              </StBtnSave>
             </StDivContentButton>
           </StDivContentWrap>
         )}
