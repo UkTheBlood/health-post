@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  addPost,
-  deletePost,
-  getDetailPost,
-  updatePost,
-} from '../api/post/postapi';
+import { deletePost, getDetailPost, updatePost } from '../api/post/postapi';
 import Comments from '../coponents/Comments';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
@@ -15,6 +10,8 @@ import Comments from '../coponents/Comments';
 function Detail() {
   const param = useParams(); // param -> url의 id(string)
   const navigate = useNavigate();
+
+  console.log(param);
 
   const [contentState, setContentState] = useState(false);
 
@@ -85,6 +82,8 @@ function Detail() {
 
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
+
+  console.log(data);
 
   return (
     <>

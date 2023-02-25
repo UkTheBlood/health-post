@@ -10,7 +10,8 @@ function Main() {
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
 
-  console.log("메인 페이지 로드")
+  console.log(data)
+
   return (
     <StDivWrap>
       <div>

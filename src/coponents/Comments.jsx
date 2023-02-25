@@ -6,6 +6,7 @@ import {
   addComment,
   deleteComment,
   getComments,
+  updateComment,
 } from '../api/comment/commentapi';
 
 function Comments() {
@@ -16,12 +17,23 @@ function Comments() {
     return getComments(params.id);
   });
 
+  // 댓글 추가
   const [content, setContent] = useState('');
-
-  const [commentState, setCommentState] = useState(false);
 
   const onChangeCommentHandler = (e) => {
     setContent(e.target.value);
+  };
+
+  // 댓글 수정
+  const [comment, setComment] = useState(data?.content);
+  const [commentState, setCommentState] = useState(null);
+
+  const commentToggleHandler = async (commentId) => {
+    setCommentState((prev) => Number(commentId));
+  };
+
+  const onChangeUpdateComment = (e) => {
+    setComment(e.target.value);
   };
 
   // 리액트 쿼리
@@ -32,6 +44,13 @@ function Comments() {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
       console.log('성공!');
+    },
+  });
+
+  // 댓글 수정하는 리액트 쿼리
+  const updateCommentMutation = useMutation(updateComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('comments');
     },
   });
 
@@ -66,6 +85,25 @@ function Comments() {
     }
   };
 
+  // 댓글 수정 -> 저장 버튼
+  const updateCommentButton = (id, content) => {
+    if (window.confirm('정말 수정하시겠습니까?') === true) {
+      setCommentState(null);
+      updateCommentMutation.mutate({ id, content });
+    } else {
+      return;
+    }
+  };
+
+  // 댓글 수정 취소 버튼
+  const commentCencleButton = () => {
+    if (window.confirm('정말 취소하시겠습니까?') === true) {
+      setCommentState(null);
+    } else {
+      return;
+    }
+  };
+
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
 
@@ -89,13 +127,38 @@ function Comments() {
           return (
             <StDivCommentContainer key={comments.commentId}>
               <StPNickname>{comments.nickname} : </StPNickname>
-              <StPComment>{comments.content}</StPComment>
-              <StBtnUpdateComment>수정</StBtnUpdateComment>
-              <StBtnUpdateComment
-                onClick={() => deleteCommentButton(comments.commentId)}
-              >
-                삭제
-              </StBtnUpdateComment>
+              {commentState !== comments.commentId ? (
+                <>
+                  <StPComment>{comments.content}</StPComment>
+                  <StBtnUpdateComment
+                    onClick={() => commentToggleHandler(comments.commentId)}
+                  >
+                    수정
+                  </StBtnUpdateComment>
+                  <StBtnUpdateComment
+                    onClick={() => deleteCommentButton(comments.commentId)}
+                  >
+                    삭제
+                  </StBtnUpdateComment>
+                </>
+              ) : (
+                <>
+                  <StInputUpdateComment
+                    type="text"
+                    defaultValue={comments.content}
+                    onChange={onChangeUpdateComment}
+                    placeholder="댓글을 수정해주세요!"
+                  />
+                  <StBtnUpdateComment onClick={commentCencleButton}>취소</StBtnUpdateComment>
+                  <StBtnUpdateComment
+                    onClick={() =>
+                      updateCommentButton(comments.commentId, comment)
+                    }
+                  >
+                    저장
+                  </StBtnUpdateComment>
+                </>
+              )}
             </StDivCommentContainer>
           );
         })}
@@ -152,7 +215,8 @@ const StPNickname = styled.p`
 `;
 const StPComment = styled.p`
   width: 300px;
-  margin: 10px;
+  margin: 20px;
+  font-size: 14px;
 `;
 const StBtnUpdateComment = styled.button`
   width: 70px;
@@ -161,4 +225,58 @@ const StBtnUpdateComment = styled.button`
   border: none;
   border-radius: 10px;
   margin-left: auto;
+  transition: 0.15s ease-in-out;
+  :hover {
+    cursor: pointer;
+    background-color: #111;
+    color: #e8d5c4;
+  }
 `;
+const StInputUpdateComment = styled.input`
+  width: 310px;
+  height: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 10px;
+`;
+
+{
+  /* <StDivCommentsWrap>
+  {data.map((comments) => {
+    return (
+      <StDivCommentContainer key={comments.commentId}>
+        <StPNickname>{comments.nickname} : </StPNickname>
+        <StPComment>{comments.content}</StPComment>
+        <StBtnUpdateComment onClick={() => setCommentState(comments.commentId)}>
+          수정
+        </StBtnUpdateComment>
+        <StBtnUpdateComment onClick={() => deleteCommentButton(0)}>
+          삭제
+        </StBtnUpdateComment>
+      </StDivCommentContainer>
+    );
+  })}
+</StDivCommentsWrap>; */
+}
+
+{
+  /* <StDivCommentsWrap>
+  {data.map((comments) => {
+    return (
+      <StDivCommentContainer key={comments.commentId}>
+        <StPNickname>{comments.nickname} : </StPNickname>
+        <StInputUpdateComment
+          type="text"
+          defaultValue={comments.content}
+          onChange={onChangeUpdateComment}
+        />
+
+        <StBtnUpdateComment onClick={() => setCommentState(0)}>
+          저장
+        </StBtnUpdateComment>
+      </StDivCommentContainer>
+    );
+  })}
+</StDivCommentsWrap>; */
+}
