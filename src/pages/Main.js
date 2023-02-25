@@ -10,13 +10,11 @@ function Main() {
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
 
-  console.log(data)
-
   return (
     <StDivWrap>
       <div>
         <StDivWrite>
-          <StPPost>게시물 (갯수)</StPPost>
+          <StPPost>게시물 ({data.length})</StPPost>
           <Link to={'/write'}>
             <StPWrite>글쓰러 가기</StPWrite>
           </Link>
@@ -57,7 +55,7 @@ const StPPost = styled.p`
   height: 50px;
   line-height: 50px;
   text-align: center;
-  font-size: 16px;
+  font-size: 20px;
 `;
 const StPWrite = styled.p`
   color: black;

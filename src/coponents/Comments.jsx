@@ -28,6 +28,7 @@ function Comments() {
   const [comment, setComment] = useState(data?.content);
   const [commentState, setCommentState] = useState(null);
 
+  // 코드 분석해보기
   const commentToggleHandler = async (commentId) => {
     setCommentState((prev) => Number(commentId));
   };

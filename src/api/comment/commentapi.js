@@ -1,3 +1,5 @@
+// 댓글 조회, 추가, 삭제, 수정 api 모음
+
 import axios from 'axios';
 
 // 댓글 조회 기능       /api/posts/:postId/comments

@@ -1,7 +1,5 @@
 // 게시물 조회, 수정, 삭제, 등록 api 모음
 
-// 예시 api http://13.209.86.39:3000/api/posts/1/comments
-
 import axios from 'axios';
 
 // 게시물 조회
