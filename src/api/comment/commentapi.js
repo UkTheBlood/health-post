@@ -8,9 +8,9 @@ export const getComments = async (id) => {
 };
 
 // 댓글 추가 기능
-// export const addComment = async ({ id, newComment }) => {
-//   await axios.post(`13.209.86.39:3003/api/posts/${id}/comments`, newComment);
-// };
+export const addComment = async ({id, newContent }) => {
+  await axios.post(`http://13.209.86.39:3003/api/posts/${id}/comments`, newContent);
+};
 
 // 댓글 삭제 기능
 

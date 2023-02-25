@@ -1,26 +1,65 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { getComments } from '../api/comment/commentapi';
+import { addComment, getComments } from '../api/comment/commentapi';
 
 function Comments() {
-  const params = useParams();   // props로 data를 내려주면 안 될듯
+  const params = useParams(); // props로 data를 내려주면 안 될듯
+  // params => {id : 1}
 
   const { isLoading, isError, data } = useQuery('comments', () => {
     return getComments(params.id);
   });
+
+  const [content, setContent] = useState('');
+
+  const onChangeCommentHandler = (e) => {
+    setContent(e.target.value);
+  };
+
+  // 리액트 쿼리
+  const queryClient = useQueryClient();
+  const addCommentMutation = useMutation(addComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailposts');
+      console.log('성공!')
+    },
+  });
+
+  // 댓글 추가 버튼
+  const addCommentButton = (id, content) => {
+    if (content !== '') {
+      const newContent = {
+        content: content,
+      };
+      alert('댓글이 추가되었습니다!');
+      setContent('')
+
+      addCommentMutation.mutate({ id, newContent });
+    } else {
+      alert('댓글을 입력해주세요');
+    }
+  };
 
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
 
   return (
     <StDivWrap>
+      {/* 댓글 작성 */}
       <StDivAddcomment>
         <StPAddcomment></StPAddcomment>
-        <StInputAddcommnet />
-        <StBtnAddcomment>작성</StBtnAddcomment>
+        <StInputAddcommnet
+          onChange={onChangeCommentHandler}
+          value={content}
+          placeholder="댓글을 입력해주세요"
+        />
+        <StBtnAddcomment onClick={() => addCommentButton(params.id, content)}>
+          작성
+        </StBtnAddcomment>
       </StDivAddcomment>
+      {/* 댓글들 */}
       <div>
         {data.map((comments) => {
           return (
@@ -28,6 +67,8 @@ function Comments() {
               <p>
                 닉네임 : {comments.nickname} 댓글 : {comments.content}
               </p>
+              <button>수정</button>
+              <button>삭제</button>
             </div>
           );
         })}
