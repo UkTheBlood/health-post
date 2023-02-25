@@ -31,7 +31,7 @@ function Detail() {
   const queryClient = useQueryClient();
   const mutation = useMutation(deletePost, {
     onSuccess: () => {
-      queryClient.invalidateQueries('detailposts');
+      queryClient.invalidateQueries('posts');
     },
     onError: () => {
       alert(isError);
@@ -40,7 +40,7 @@ function Detail() {
 
   const updatemutation = useMutation(updatePost, {
     onSuccess: () => {
-      queryClient.invalidateQueries('posts');
+      queryClient.invalidateQueries('detailposts');
     }
   })
 
@@ -57,6 +57,7 @@ function Detail() {
   // 저장 버튼
   const saveButton = (id, inputTitle, inputContent) => {
     setContentState(false);
+    // console.log(inputTitle, inputContent)
     updatemutation.mutate({id, inputTitle, inputContent});
   }
 
@@ -103,6 +104,7 @@ function Detail() {
                 onChange={onChangeInputTitleHandler}
                 type="text"
                 defaultValue={data.title}
+                // value={inputTitle}
                 placeholder="제목을 수정해주세요!"
               />
             </StDivTitle>
@@ -111,6 +113,7 @@ function Detail() {
                 onChange={onChangeTextareaContentHandler}
                 type="text"
                 defaultValue={data.content}
+                // value={inputContent}
                 placeholder="내용을 수정해주세요!"
               />
             </StDivContent>

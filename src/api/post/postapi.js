@@ -29,11 +29,10 @@ const deletePost = async (id) => {
 };
 
 // 게시물 수정
-const updatePost = async (id, inputTitle, inputContent) => {
-  console.log('id: ', id)    // 31
-  await axios.put(`http://13.209.86.39:3003/api/posts/${id.id}`, {
-    title : inputTitle,
-    content : inputContent,
+const updatePost = async ({id, inputTitle, inputContent}) => {  // 받아올 때도 중괄호
+  await axios.put(`http://13.209.86.39:3003/api/posts/${id}`, {
+    title : `${inputTitle}`,
+    content : `${inputContent}`,
   })
 }
 
