@@ -18,6 +18,14 @@ function Write() {
   // navigate
   const navigate = useNavigate();
 
+  const cancelButton = () => {
+    if (window.confirm('취소하시겠습니까? 홈 화면으로 돌아갑니다.')) {
+      navigate('/');
+    } else {
+      return;
+    }
+  };
+
   // 리액트 쿼리
   const queryClient = useQueryClient();
   const mutation = useMutation(addPost, {
@@ -64,6 +72,7 @@ function Write() {
           placeholder="게시글 내용을 입력해주세요"
         />
         <StDivSave>
+          <StBtnCancel onClick={cancelButton}>취소</StBtnCancel>
           <StBtnSave onClick={addButton}>저장</StBtnSave>
         </StDivSave>
       </div>
@@ -98,11 +107,23 @@ const StTextContent = styled.textarea`
   border: 1px solid rgba(0, 0, 0, 0.3);
   font-size: 16px;
 `;
-const StDivSave = styled.div``;
+const StDivSave = styled.div`
+  text-align: right;
+  margin-right: 40px;
+`;
 const StBtnSave = styled.button`
   width: 150px;
   height: 40px;
   margin: 20px 0px 0px 0px;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: aliceblue;
+`;
+const StBtnCancel = styled.button`
+  width: 150px;
+  height: 40px;
+  margin: 20px 40px 0px 0px;
   text-align: center;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.3);

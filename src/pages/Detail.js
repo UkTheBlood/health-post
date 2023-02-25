@@ -8,6 +8,7 @@ import {
   getDetailPost,
   updatePost,
 } from '../api/post/postapi';
+import Comments from '../coponents/Comments';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
@@ -29,8 +30,8 @@ function Detail() {
     getDetailPost(param.id)
   );
 
-  const [inputTitle, setInputTitle] = useState('');
-  const [inputContent, setInputContent] = useState('');
+  const [inputTitle, setInputTitle] = useState(data?.title);
+  const [inputContent, setInputContent] = useState(data?.content);
 
   // React Query 부분
   const queryClient = useQueryClient();
@@ -59,6 +60,15 @@ function Detail() {
     }
   };
 
+  // 취소 버튼
+  const cancelButton = () => {
+    if (window.confirm('취소하시겠습니까? 이전 화면으로 돌아갑니다.')) {
+      setContentState(false)
+    } else {
+      return;
+    }
+  };
+
   // 저장 버튼
   const saveButton = (id, inputTitle, inputContent) => {
     if (inputTitle !== '' && inputContent !== '') {
@@ -80,32 +90,37 @@ function Detail() {
     <>
       <div>
         {contentState === false ? (
-          <StDivContentWrap>
-            <StDivWriter>
-              <StPWriter>작성자 : {data.nickname}</StPWriter>
-            </StDivWriter>
-            <StDivTitle>
-              <p> 제목 : {data.title}</p>
-            </StDivTitle>
-            <StDivContent>
-              <p>{data.content}</p>
-            </StDivContent>
-            <StDivComment>
-              <p>댓글 수 : 냅둡시다 👍 : {data.likes}</p>
-              {/* 댓글 수 백엔드에 없음 */}
-            </StDivComment>
-            <StDivContentButton>
-              <StBtnView onClick={() => navigate('/')}>
-                전체 목록 보기
-              </StBtnView>
-              <StBtnPostUpdate onClick={() => setContentState(true)}>
-                수정
-              </StBtnPostUpdate>
-              <StBtnPostDelete onClick={() => deleteButton(data.postId)}>
-                삭제
-              </StBtnPostDelete>
-            </StDivContentButton>
-          </StDivContentWrap>
+          <>
+            <StDivContentWrap>
+              <StDivWriter>
+                <StPWriter>작성자 : {data.nickname}</StPWriter>
+              </StDivWriter>
+              <StDivTitle>
+                <p> 제목 : {data.title}</p>
+              </StDivTitle>
+              <StDivContent>
+                <p>{data.content}</p>
+              </StDivContent>
+              <StDivComment>
+                <p>댓글 수 : 냅둡시다 👍 : {data.likes}</p>
+                {/* 댓글 수 백엔드에 없음 */}
+              </StDivComment>
+              <StDivContentButton>
+                <StBtnView onClick={() => navigate('/')}>
+                  전체 목록 보기
+                </StBtnView>
+                <StBtnPostUpdate onClick={() => setContentState(true)}>
+                  수정
+                </StBtnPostUpdate>
+                <StBtnPostDelete onClick={() => deleteButton(data.postId)}>
+                  삭제
+                </StBtnPostDelete>
+              </StDivContentButton>
+
+              {/* 댓글 부분 */}
+            </StDivContentWrap>
+            <Comments />
+          </>
         ) : (
           <StDivContentWrap>
             <StDivWriter>
@@ -130,6 +145,7 @@ function Detail() {
               />
             </StDivContent>
             <StDivContentButton>
+              <StBtnCancle onClick={cancelButton}>취소</StBtnCancle>
               <StBtnSave
                 onClick={() =>
                   saveButton(data.postId, inputTitle, inputContent)
@@ -226,6 +242,9 @@ const StTextareaContent = styled.textarea`
   padding: 10px;
   border-radius: 10px;
 `;
+const StBtnCancle = styled(StBtnPostUpdate)`
+  margin: 20px 0px 0px 0px;
+`
 const StBtnSave = styled(StBtnPostDelete)`
   margin: 20px 20px 10px auto;
 `;
