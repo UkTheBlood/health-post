@@ -118,7 +118,7 @@ function Detail() {
               </StDivContentButton>
             </StDivContentWrap>
             {/* 댓글 부분 */}
-            <Comments postdata={data} />
+            <Comments />
           </>
         ) : (
           <StDivContentWrap>

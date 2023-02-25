@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ function Main() {
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
 
+  console.log("메인 페이지 로드")
   return (
     <StDivWrap>
       <div>

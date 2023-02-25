@@ -1,16 +1,18 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getComments } from '../api/comment/commentapi';
 
-function Comments({ postdata }) {
-  const { isLoading, isError, data } = useQuery('comments', () =>
-    getComments(postdata.postId)
-  );
+function Comments() {
+  const params = useParams();   // props로 data를 내려주면 안 될듯
+
+  const { isLoading, isError, data } = useQuery('comments', () => {
+    return getComments(params.id);
+  });
+
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
-
-  console.log(data);
 
   return (
     <StDivWrap>
@@ -29,7 +31,6 @@ function Comments({ postdata }) {
             </div>
           );
         })}
-        <p>댓글 보여주는 부분</p>
       </div>
     </StDivWrap>
   );
