@@ -63,7 +63,7 @@ function Detail() {
   // 취소 버튼
   const cancelButton = () => {
     if (window.confirm('취소하시겠습니까? 이전 화면으로 돌아갑니다.')) {
-      setContentState(false)
+      setContentState(false);
     } else {
       return;
     }
@@ -116,10 +116,9 @@ function Detail() {
                   삭제
                 </StBtnPostDelete>
               </StDivContentButton>
-
-              {/* 댓글 부분 */}
             </StDivContentWrap>
-            <Comments />
+            {/* 댓글 부분 */}
+            <Comments postdata={data} />
           </>
         ) : (
           <StDivContentWrap>
@@ -244,7 +243,7 @@ const StTextareaContent = styled.textarea`
 `;
 const StBtnCancle = styled(StBtnPostUpdate)`
   margin: 20px 0px 0px 0px;
-`
+`;
 const StBtnSave = styled(StBtnPostDelete)`
   margin: 20px 20px 10px auto;
 `;
