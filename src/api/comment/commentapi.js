@@ -13,5 +13,9 @@ export const addComment = async ({id, newContent }) => {
 };
 
 // 댓글 삭제 기능
+export const deleteComment = async (id) => {
+    await axios.delete(`http://13.209.86.39:3003/api/comments/${id}`)
+}
+
 
 // 댓글 수정 기능

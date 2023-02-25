@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { addComment, getComments } from '../api/comment/commentapi';
+import {
+  addComment,
+  deleteComment,
+  getComments,
+} from '../api/comment/commentapi';
 
 function Comments() {
   const params = useParams(); // props로 data를 내려주면 안 될듯
@@ -20,10 +24,19 @@ function Comments() {
 
   // 리액트 쿼리
   const queryClient = useQueryClient();
+
+  // 추가하는 리액트 쿼리
   const addCommentMutation = useMutation(addComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries('detailposts');
-      console.log('성공!')
+      queryClient.invalidateQueries('comments');
+      console.log('성공!');
+    },
+  });
+
+  // 삭제하는 리액트 쿼리
+  const deleteCommentMutation = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('comments');
     },
   });
 
@@ -34,11 +47,20 @@ function Comments() {
         content: content,
       };
       alert('댓글이 추가되었습니다!');
-      setContent('')
+      setContent('');
 
       addCommentMutation.mutate({ id, newContent });
     } else {
       alert('댓글을 입력해주세요');
+    }
+  };
+
+  // 댓글 삭제 버튼
+  const deleteCommentButton = (id) => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      deleteCommentMutation.mutate(id);
+    } else {
+      return;
     }
   };
 
@@ -68,7 +90,7 @@ function Comments() {
                 닉네임 : {comments.nickname} 댓글 : {comments.content}
               </p>
               <button>수정</button>
-              <button>삭제</button>
+              <button onClick={() => deleteCommentButton(comments.commentId)}>삭제</button>
             </div>
           );
         })}
