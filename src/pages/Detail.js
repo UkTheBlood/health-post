@@ -102,11 +102,11 @@ function Detail() {
                 삭제
               </StBtnPostUpdate>
               <StDivTitle>
-                <p> 제목 : {data.title}</p>
+                <StH1Title>{data.title}</StH1Title>
               </StDivTitle>
               <hr />
               <StDivContent>
-                <p>{data.content}</p>
+                <StPContent>{data.content}</StPContent>
               </StDivContent>
               <StDivComment>
                 <p>댓글 수 : 냅둡시다 👍 : {data.likes}</p>
@@ -168,7 +168,7 @@ const StDivContentWrap = styled.div`
   margin: 40px auto;
   padding: 10px 20px;
   border-radius: 10px;
-  background-color: antiquewhite;
+  border: 1px solid rgba(0, 0, 0, 0.3);
 `;
 const StDivWriter = styled.div`
   display: flex;
@@ -181,7 +181,7 @@ const StPWriter = styled.p`
 const StDivTitle = styled.div`
   width: 550px;
   height: 40px;
-  margin: 20px auto;
+  margin: 0px auto;
   background-color: white;
   border-radius: 10px;
   padding: 10px;
@@ -190,12 +190,18 @@ const StDivTitle = styled.div`
 const StDivContent = styled.div`
   width: 550px;
   height: 400px;
-  margin: 18px auto;
+  margin: auto;
   background-color: white;
   border-radius: 10px;
   padding: 10px;
   line-height: 10px;
 `;
+const StH1Title = styled.p`
+font-size: 30px;
+`
+const StPContent = styled.p`
+  line-height: 20px;
+`
 const StDivComment = styled.div`
   text-align: right;
   margin: 10px;
@@ -218,7 +224,7 @@ const StBtnPostUpdate = styled.button`
   margin-right: 0px;
   border: none;
   border-radius: 10px;
-  background-color: antiquewhite;
+  background-color: white;
   color: rgba(0, 0, 0, 0.6);
   :hover {
     color: black;
@@ -229,7 +235,7 @@ const StBtnPostDelete = styled.button`
   height: 20px;
   border: none;
   border-radius: 10px;
-  background-color: antiquewhite;
+  background-color: white;
   color: rgba(0, 0, 0, 0.6);
 `;
 
