@@ -83,7 +83,7 @@ function Detail() {
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
 
-  console.log(data);
+  const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
 
   return (
     <>
@@ -93,10 +93,18 @@ function Detail() {
             <StDivContentWrap>
               <StDivWriter>
                 <StPWriter>작성자 : {data.nickname}</StPWriter>
+                <p>{datadate}</p>
               </StDivWriter>
+              <StBtnPostUpdate onClick={() => setContentState(true)}>
+                수정
+              </StBtnPostUpdate>
+              <StBtnPostUpdate onClick={() => deleteButton(data.postId)}>
+                삭제
+              </StBtnPostUpdate>
               <StDivTitle>
                 <p> 제목 : {data.title}</p>
               </StDivTitle>
+              <hr />
               <StDivContent>
                 <p>{data.content}</p>
               </StDivContent>
@@ -108,12 +116,6 @@ function Detail() {
                 <StBtnView onClick={() => navigate('/')}>
                   전체 목록 보기
                 </StBtnView>
-                <StBtnPostUpdate onClick={() => setContentState(true)}>
-                  수정
-                </StBtnPostUpdate>
-                <StBtnPostDelete onClick={() => deleteButton(data.postId)}>
-                  삭제
-                </StBtnPostDelete>
               </StDivContentButton>
             </StDivContentWrap>
             {/* 댓글 부분 */}
@@ -169,11 +171,12 @@ const StDivContentWrap = styled.div`
   background-color: antiquewhite;
 `;
 const StDivWriter = styled.div`
-  text-align: right;
+  display: flex;
 `;
 const StPWriter = styled.p`
   font-size: 18px;
   font-weight: 500;
+  margin-right: auto;
 `;
 const StDivTitle = styled.div`
   width: 550px;
@@ -187,7 +190,7 @@ const StDivTitle = styled.div`
 const StDivContent = styled.div`
   width: 550px;
   height: 400px;
-  margin: auto;
+  margin: 18px auto;
   background-color: white;
   border-radius: 10px;
   padding: 10px;
@@ -210,19 +213,24 @@ const StBtnView = styled.button`
   background-color: #9dc08b;
 `;
 const StBtnPostUpdate = styled.button`
-  width: 80px;
-  height: 40px;
-  margin-right: 30px;
+  width: 60px;
+  height: 20px;
+  margin-right: 0px;
   border: none;
   border-radius: 10px;
-  background-color: #609966;
+  background-color: antiquewhite;
+  color: rgba(0, 0, 0, 0.6);
+  :hover {
+    color: black;
+  }
 `;
 const StBtnPostDelete = styled.button`
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 20px;
   border: none;
   border-radius: 10px;
-  background-color: #609966;
+  background-color: antiquewhite;
+  color: rgba(0, 0, 0, 0.6);
 `;
 
 const StInputTitle = styled.input`
@@ -240,9 +248,20 @@ const StTextareaContent = styled.textarea`
   padding: 10px;
   border-radius: 10px;
 `;
-const StBtnCancle = styled(StBtnPostUpdate)`
+const StBtnCancle = styled.button`
   margin: 20px 0px 0px 0px;
+  width: 80px;
+  height: 40px;
+  margin-right: 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: #609966;
 `;
-const StBtnSave = styled(StBtnPostDelete)`
+const StBtnSave = styled.button`
+  width: 80px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background-color: #609966;
   margin: 20px 20px 10px auto;
 `;

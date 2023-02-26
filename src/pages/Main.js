@@ -15,6 +15,12 @@ function Main() {
       <div>
         <StDivWrite>
           <StPPost>게시물 ({data.length})</StPPost>
+          <Link to={'/login'}>
+            <StPWrite>로그인</StPWrite>
+          </Link>
+          <Link to={'/signup'}>
+            <StPWrite>회원가입</StPWrite>
+          </Link>
           <Link to={'/write'}>
             <StPWrite>글쓰러 가기</StPWrite>
           </Link>
@@ -60,7 +66,7 @@ const StPPost = styled.p`
 const StPWrite = styled.p`
   color: black;
   text-decoration: none;
-  margin-left: auto;
+  margin-left: 30px;
   width: 130px;
   height: 50px;
   line-height: 50px;
