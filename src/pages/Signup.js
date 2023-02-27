@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-// 리액트쿠키 라이브러리?
-
 function Signup() {
   const [state, setState] = useState({ id: '', pw: '', nickname: '' });
   const [cookies, setCookie] = useCookies(['userToken']);
