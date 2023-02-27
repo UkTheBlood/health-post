@@ -4,22 +4,16 @@ import axios from 'axios';
 
 // 게시물 추가
 const addPost = async (newPost) => {
-  await axios.post(
-    `${process.env.REACT_APP_SERVER}/api/posts`,
-    newPost,
-    {
-      'Content-Type': 'multipart/form-data',
-    }
-  );
+  await axios.post(`${process.env.REACT_APP_SERVER}/api/posts`, newPost, {
+    'Content-Type': 'multipart/form-data',
+  });
 };
 
 // 게시물 목록 조회
 const getPosts = async () => {
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER}/api/posts`
-  );
-  console.log("response", response)
-  return response.data.data
+  const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/posts`);
+  console.log('response', response);
+  return response.data.data;
 };
 
 // 상세 게시물 조회
@@ -34,21 +28,17 @@ const getDetailPost = async (id) => {
 // 게시물 삭제
 const deletePost = async (id) => {
   const postId = Number(id);
-  await axios.delete(
-    `${process.env.REACT_APP_SERVER}/api/posts/${postId}`
-  );
+  await axios.delete(`${process.env.REACT_APP_SERVER}/api/posts/${postId}`);
 };
 
 // 게시물 수정
-const updatePost = async ({ id, inputTitle, inputContent }) => {
+const updatePost = async ({ id, inputTitle, inputContent, image }) => {
   // 받아올 때도 중괄호
-  await axios.put(
-    `${process.env.REACT_APP_SERVER}/api/posts/${id}`,
-    {
-      title: `${inputTitle}`,
-      content: `${inputContent}`,
-    }
-  );
+  await axios.put(`${process.env.REACT_APP_SERVER}/api/posts/${id}`, {
+    title: `${inputTitle}`,
+    content: `${inputContent}`,
+    image: image,
+  });
 };
 
 // 좋아요 기능

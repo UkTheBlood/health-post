@@ -23,7 +23,7 @@ function Write() {
     formData.append('image', image);
     console.log('formData', formData);
     console.log('inside image', image);
-    for (const keyValue of formData) console.log("keyValue", keyValue);
+    for (const keyValue of formData) console.log('keyValue', keyValue);
   };
   console.log('outside image', image);
 
@@ -45,9 +45,10 @@ function Write() {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
     },
-    onError: (error) => {    // 콜백함수 인자 : error 인자가 있음
-      console.log(error)
-    }
+    onError: (error) => {
+      // 콜백함수 인자 : error 인자가 있음
+      console.log(error);
+    },
   });
 
   // 추가 버튼
@@ -89,7 +90,9 @@ function Write() {
           placeholder="게시글 내용을 입력해주세요"
         />
         {/* 체인지인지 클릭인지 */}
-        <input onChange={imageSubmitHandler} id="file" type="file" />
+        <StLabelImg htmlFor="contained-button-file" className="m-0 w-100">
+          <StInputImg onChange={imageSubmitHandler} id="file" type="file" />
+        </StLabelImg>
         <StDivSave>
           <StBtnCancel onClick={cancelButton}>취소</StBtnCancel>
           <StBtnSave onClick={addButton}>저장</StBtnSave>
@@ -148,3 +151,21 @@ const StBtnCancel = styled.button`
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-color: aliceblue;
 `;
+const StInputImg = styled.input`
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  width: 78%;
+  color: #999999;
+`;
+const StLabelImg = styled.label`
+display: inline-block;
+padding: 10px 20px;
+color: #fff;
+vertical-align: middle;
+cursor: pointer;
+height: 40px;
+margin-left: 10px;
+`
