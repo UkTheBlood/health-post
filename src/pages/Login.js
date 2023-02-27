@@ -17,6 +17,7 @@ function Login() {
       alert('로그인 성공!');
     } catch (error) {
       console.error(error);
+      // 에러메시지
     }
   };
 

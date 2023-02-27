@@ -19,6 +19,7 @@ function Signup() {
       alert('회원가입 성공!');
     } catch (error) {
       console.error(error);
+      // 에러메시지
     }
   };
 
