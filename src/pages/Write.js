@@ -7,6 +7,7 @@ import { addPost } from '../api/post/postapi';
 function Write() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [image, setImage] = useState('');
 
   const onChangeTitleHandler = (e) => {
     setTitle(e.target.value);
@@ -15,9 +16,21 @@ function Write() {
     setContent(e.target.value);
   };
 
+  // 이미지 첨부 input onChange 함수
+  const imageSubmitHandler = (e) => {
+    setImage(() => e.target.files[0]);
+    const formData = new FormData();
+    formData.append('image', image);
+    console.log('formData', formData);
+    console.log('inside image', image);
+    for (const keyValue of formData) console.log("keyValue", keyValue);
+  };
+  console.log('outside image', image);
+
   // navigate
   const navigate = useNavigate();
 
+  // 취소
   const cancelButton = () => {
     if (window.confirm('취소하시겠습니까? 홈 화면으로 돌아갑니다.')) {
       navigate('/');
@@ -40,6 +53,7 @@ function Write() {
       const newPost = {
         title,
         content,
+        image,
       };
       alert('게시글이 추가되었습니다!');
 
@@ -71,6 +85,8 @@ function Write() {
           type="text"
           placeholder="게시글 내용을 입력해주세요"
         />
+        {/* 체인지인지 클릭인지 */}
+        <input onChange={imageSubmitHandler} id="file" type="file" />
         <StDivSave>
           <StBtnCancel onClick={cancelButton}>취소</StBtnCancel>
           <StBtnSave onClick={addButton}>저장</StBtnSave>
