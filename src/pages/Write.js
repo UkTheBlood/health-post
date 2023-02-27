@@ -45,6 +45,9 @@ function Write() {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
     },
+    onError: (error) => {    // 콜백함수 인자 : error 인자가 있음
+      console.log(error)
+    }
   });
 
   // 추가 버튼

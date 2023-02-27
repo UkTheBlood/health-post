@@ -16,6 +16,7 @@ function Comments() {
   const { isLoading, isError, data } = useQuery('comments', () => {
     return getComments(params.id);
   });
+  console.log("data",data)
 
   // 댓글 추가
   const [content, setContent] = useState('');
@@ -130,7 +131,7 @@ function Comments() {
               <StPNickname>{comments.nickname} : </StPNickname>
               {commentState !== comments.commentId ? (
                 <>
-                  <StPComment>{comments.content}</StPComment>
+                  <StPComment>{comments.comment}</StPComment>
                   <StBtnUpdateComment
                     onClick={() => commentToggleHandler(comments.commentId)}
                   >
