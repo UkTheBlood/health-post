@@ -2,26 +2,7 @@
 
 import axios from 'axios';
 
-// 게시물 조회        /api/posts
-const getPosts = async () => {
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER}/api/posts`
-  );
-  console.log("response", response)
-  return response.data.data
-};
-
-// 상세 게시물 조회   api/posts/:${postId}
-const getDetailPost = async (id) => {
-  const postId = Number(id);
-  const detailresponse = await axios.get(
-    `${process.env.REACT_APP_SERVER}/api/posts/1`
-  );
-  // console.log(detailresponse)
-  return detailresponse.data.data;
-};
-
-// 게시물 추가    /api/posts (O)
+// 게시물 추가
 const addPost = async (newPost) => {
   await axios.post(
     `${process.env.REACT_APP_SERVER}/api/posts`,
@@ -32,7 +13,25 @@ const addPost = async (newPost) => {
   );
 };
 
-// 게시물 삭제    /api/posts/:postId (O)
+// 게시물 목록 조회
+const getPosts = async () => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER}/api/posts`
+  );
+  console.log("response", response)
+  return response.data.data
+};
+
+// 상세 게시물 조회
+const getDetailPost = async (id) => {
+  const postId = Number(id);
+  const detailresponse = await axios.get(
+    `${process.env.REACT_APP_SERVER}/api/posts/${postId}`
+  );
+  return detailresponse.data.data;
+};
+
+// 게시물 삭제
 const deletePost = async (id) => {
   const postId = Number(id);
   await axios.delete(
@@ -40,7 +39,7 @@ const deletePost = async (id) => {
   );
 };
 
-// 게시물 수정    /api/posts/:postId (O)
+// 게시물 수정
 const updatePost = async ({ id, inputTitle, inputContent }) => {
   // 받아올 때도 중괄호
   await axios.put(
@@ -52,7 +51,7 @@ const updatePost = async ({ id, inputTitle, inputContent }) => {
   );
 };
 
-// 좋아요 기능    /api/likes/posts/:postId (O)
+// 좋아요 기능
 const likeUp = async (id) => {
   const postId = Number(id);
   await axios.put(`${process.env.REACT_APP_SERVER}/api/likes/posts/${postId}`);
