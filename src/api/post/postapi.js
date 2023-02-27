@@ -37,7 +37,6 @@ const updatePost = async ({id, inputTitle, inputContent}) => {  // 받아올 때
 // 좋아요 기능    /api/likes/posts/:postId (O)
 const likeUp = async (id) => {
   const postId = Number(id)
-  console.log("postId", postId)
   await axios.put(`http://13.209.86.39:3003/api/likes/posts/${postId}`)
 }
 

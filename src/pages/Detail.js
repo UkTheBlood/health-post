@@ -16,8 +16,6 @@ function Detail() {
   const param = useParams(); // param -> url의 id(string)
   const navigate = useNavigate();
 
-  console.log('param', param);
-
   const [contentState, setContentState] = useState(false);
   const [likeState, setLikeState] = useState(false);
 
@@ -65,7 +63,7 @@ function Detail() {
 
   // 좋아요 버튼
   const onClickLikeHandler = (id) => {
-    console.log("id",id)
+    console.log('id', id);
     setLikeState(!likeState);
     likemutation.mutate(id);
   };
@@ -135,7 +133,9 @@ function Detail() {
                 댓글 수 : 냅둡시다
                 {likeState === false ? (
                   <>
-                    <p onClick={() => onClickLikeHandler(param.id)}>🤍 좋아요 : {data.likes}</p>
+                    <p onClick={() => onClickLikeHandler(param.id)}>
+                      🤍 좋아요 : {data.likes}
+                    </p>
                   </>
                 ) : (
                   <p onClick={() => onClickLikeHandler(param.id)}>
