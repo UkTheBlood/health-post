@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 function Signup() {
-  const [state, setState] = useState({ id: '', pw: '', nickname: '' });
-  const [cookies, setCookie] = useCookies(['userToken']);
+  const [state, setState] = useState({
+    id: '',
+    pw: '',
+    nickname: '',
+  });
 
   const handleSignup = async () => {
     try {
-      const { data } = await axios.post('http://localhost:3000/signup', state);
-      setCookie('userToken', data.token);
+      await axios.post('http://13.209.86.39:3003/api/signup', {
+        nickname: state.nickname,
+        password: state.pw,
+        confirmPassword: state.pw,
+      });
+      alert('회원가입 성공!');
     } catch (error) {
       console.error(error);
     }
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState((prevState) => ({ ...prevState, [name]: value }));
