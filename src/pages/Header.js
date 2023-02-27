@@ -15,13 +15,13 @@ function Header() {
 export default Header;
 
 const StDivWrap = styled.div`
-    height: 50px;
-    padding: 5px;
-    text-align: center;
-    background-color: antiquewhite;
-`
+  height: 50px;
+  padding: 5px;
+  text-align: center;
+  background-color: antiquewhite;
+`;
 const StPLogo = styled.p`
-    font-size: 33px;
-    color: black;
-    margin: 0px;
-`
+  font-size: 33px;
+  color: black;
+  margin: 0px;
+`;
