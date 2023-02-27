@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { deletePost, getDetailPost, updatePost } from '../api/post/postapi';
+import {
+  deletePost,
+  getDetailPost,
+  updatePost,
+  likeUp,
+} from '../api/post/postapi';
 import Comments from '../coponents/Comments';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
@@ -11,9 +16,10 @@ function Detail() {
   const param = useParams(); // param -> url의 id(string)
   const navigate = useNavigate();
 
-  console.log(param);
+  console.log('param', param);
 
   const [contentState, setContentState] = useState(false);
+  const [likeState, setLikeState] = useState(false);
 
   const onChangeInputTitleHandler = (e) => {
     setInputTitle(e.target.value);
@@ -32,6 +38,8 @@ function Detail() {
 
   // React Query 부분
   const queryClient = useQueryClient();
+
+  // 삭제 뮤테이션
   const mutation = useMutation(deletePost, {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
@@ -41,11 +49,26 @@ function Detail() {
     },
   });
 
+  // 업데이트 뮤테이션
   const updatemutation = useMutation(updatePost, {
     onSuccess: () => {
       queryClient.invalidateQueries('detailposts');
     },
   });
+
+  // 좋아요 버튼 뮤테이션
+  const likemutation = useMutation(likeUp, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailposts');
+    },
+  });
+
+  // 좋아요 버튼
+  const onClickLikeHandler = (id) => {
+    console.log("id",id)
+    setLikeState(!likeState);
+    likemutation.mutate(id);
+  };
 
   // 삭제 버튼
   const deleteButton = (id) => {
@@ -109,7 +132,16 @@ function Detail() {
                 <StPContent>{data.content}</StPContent>
               </StDivContent>
               <StDivComment>
-                <p>댓글 수 : 냅둡시다 👍 : {data.likes}</p>
+                댓글 수 : 냅둡시다
+                {likeState === false ? (
+                  <>
+                    <p onClick={() => onClickLikeHandler(param.id)}>🤍 좋아요 : {data.likes}</p>
+                  </>
+                ) : (
+                  <p onClick={() => onClickLikeHandler(param.id)}>
+                    💓 좋아요 : {data.likes}
+                  </p>
+                )}
                 {/* 댓글 수 백엔드에 없음 */}
               </StDivComment>
               <StDivContentButton>
@@ -197,11 +229,11 @@ const StDivContent = styled.div`
   line-height: 10px;
 `;
 const StH1Title = styled.p`
-font-size: 30px;
-`
+  font-size: 30px;
+`;
 const StPContent = styled.p`
   line-height: 20px;
-`
+`;
 const StDivComment = styled.div`
   text-align: right;
   margin: 10px;
