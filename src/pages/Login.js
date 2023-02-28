@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies, useCookies } from 'react-cookie';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { setCookie } from '../until/cookie/index';
+import { getCookie, setCookie } from '../until/cookie/index';
 
 function Login() {
   const [state, setState] = useState({ email: '', password: '' });
@@ -23,6 +23,7 @@ function Login() {
       setCookie('userToken', jwtToken, {
         path: '/',
       });
+      console.log(jwtToken)
       // const decodedUserInfo = jwt_decode(jwtToken);
 
       // 토큰에 저장되어있는 userInfo 저장
@@ -35,6 +36,7 @@ function Login() {
       // 에러메시지
     }
   };
+  console.log("getCookie", getCookie('userToken'));
 
   // 아이디 이메일형식으로 수정, 중복여부 버튼 만들어보기
 
