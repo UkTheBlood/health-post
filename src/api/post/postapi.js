@@ -6,7 +6,7 @@ import { getCookie } from '../../until/cookie';
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER,
   headers: {
-    Authorization: `Bearer ${getCookie('userToken')}`,
+    authorization: `Bearer ${getCookie('userToken')}`,
   },
 });
 
@@ -19,16 +19,23 @@ const addPost = async (newPost) => {
 
 // 게시물 목록 조회
 const getPosts = async () => {
-  const response = await instance.get(`/api/posts`);
+  const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/posts`);
   return response.data.data;
 };
 
 // 상세 게시물 조회
 const getDetailPost = async (id) => {
   const postId = Number(id);
-  const detailresponse = await instance.get(`/api/posts/${postId}`);
+  const detailresponse = await axios.get(`${process.env.REACT_APP_SERVER}/api/posts/${postId}`, {
+    headers: {
+      authorization: `Bearer ${getCookie('userToken')}`,
+    }
+  });
+  console.log("detailresponse", detailresponse)
   return detailresponse.data.data;
 };
+
+// console.log("getCookie", getCookie('userToken'))
 
 // 게시물 삭제
 const deletePost = async (id) => {

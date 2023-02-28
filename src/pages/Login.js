@@ -17,13 +17,12 @@ function Login() {
         `${process.env.REACT_APP_SERVER}/api/login`,
         state
       );
-      const jwtToken = data;
+    
+      const jwtToken = data.data.token;
+      console.log("jwtToken", jwtToken)
 
       // jwtToken 을 userToken으로 지정 => 쿠키에 토큰 저장
-      setCookie('userToken', jwtToken, {
-        path: '/',
-      });
-      console.log(jwtToken)
+      setCookie('userToken', jwtToken);
       // const decodedUserInfo = jwt_decode(jwtToken);
 
       // 토큰에 저장되어있는 userInfo 저장
@@ -36,7 +35,6 @@ function Login() {
       // 에러메시지
     }
   };
-  console.log("getCookie", getCookie('userToken'));
 
   // 아이디 이메일형식으로 수정, 중복여부 버튼 만들어보기
 
