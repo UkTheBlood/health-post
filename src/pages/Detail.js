@@ -18,6 +18,7 @@ function Detail() {
 
   const [contentState, setContentState] = useState(false);
   const [likeState, setLikeState] = useState(false);
+  const [image, setImage] = useState('');
 
   const onChangeInputTitleHandler = (e) => {
     setInputTitle(e.target.value);
@@ -63,7 +64,6 @@ function Detail() {
 
   // 좋아요 버튼
   const onClickLikeHandler = (id) => {
-    console.log('id', id);
     setLikeState(!likeState);
     likemutation.mutate(id);
   };
@@ -88,17 +88,26 @@ function Detail() {
   };
 
   // 저장 버튼
-  const saveButton = (id, inputTitle, inputContent) => {
+  const saveButton = (id, inputTitle, inputContent, image) => {
     if (inputTitle !== '' && inputContent !== '') {
       if (window.confirm('정말 수정하시겠습니까?') === true) {
         setContentState(false);
-        updatemutation.mutate({ id, inputTitle, inputContent });
+        updatemutation.mutate({ id, inputTitle, inputContent, image });
       } else {
         return;
       }
     } else {
       alert('제목과 내용을 모두 입력해주세요!');
     }
+  };
+
+  const imageSubmitHandler = (e) => {
+    setImage(() => e.target.files[0]);
+    const formData = new FormData();
+    formData.append('image', image);
+    console.log('formData', formData);
+    console.log('inside image', image);
+    for (const keyValue of formData) console.log('keyValue', keyValue);
   };
 
   if (isLoading) return <h1>로딩중</h1>;
@@ -152,6 +161,7 @@ function Detail() {
             </StDivContentWrap>
             {/* 댓글 부분 */}
             <Comments />
+            {/* 댓글 부분 */}
           </>
         ) : (
           <StDivContentWrap>
@@ -176,11 +186,13 @@ function Detail() {
                 placeholder="내용을 수정해주세요!"
               />
             </StDivContent>
+            <input onChange={imageSubmitHandler} id="file" type="file" />
+
             <StDivContentButton>
               <StBtnCancle onClick={cancelButton}>취소</StBtnCancle>
               <StBtnSave
                 onClick={() =>
-                  saveButton(data.postId, inputTitle, inputContent)
+                  saveButton(data.postId, inputTitle, inputContent, image)
                 }
               >
                 저장

@@ -7,6 +7,7 @@ import { addPost } from '../api/post/postapi';
 function Write() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [image, setImage] = useState('');
 
   const onChangeTitleHandler = (e) => {
     setTitle(e.target.value);
@@ -15,9 +16,21 @@ function Write() {
     setContent(e.target.value);
   };
 
+  // 이미지 첨부 input onChange 함수
+  const imageSubmitHandler = (e) => {
+    setImage(() => e.target.files[0]);
+    const formData = new FormData();
+    formData.append('image', image);
+    console.log('formData', formData);
+    console.log('inside image', image);
+    for (const keyValue of formData) console.log('keyValue', keyValue);
+  };
+  console.log('outside image', image);
+
   // navigate
   const navigate = useNavigate();
 
+  // 취소
   const cancelButton = () => {
     if (window.confirm('취소하시겠습니까? 홈 화면으로 돌아갑니다.')) {
       navigate('/');
@@ -32,6 +45,10 @@ function Write() {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
     },
+    onError: (error) => {
+      // 콜백함수 인자 : error 인자가 있음
+      console.log(error);
+    },
   });
 
   // 추가 버튼
@@ -40,6 +57,7 @@ function Write() {
       const newPost = {
         title,
         content,
+        image,
       };
       alert('게시글이 추가되었습니다!');
 
@@ -71,6 +89,10 @@ function Write() {
           type="text"
           placeholder="게시글 내용을 입력해주세요"
         />
+        {/* 체인지인지 클릭인지 */}
+        <StLabelImg htmlFor="contained-button-file" className="m-0 w-100">
+          <StInputImg onChange={imageSubmitHandler} id="file" type="file" />
+        </StLabelImg>
         <StDivSave>
           <StBtnCancel onClick={cancelButton}>취소</StBtnCancel>
           <StBtnSave onClick={addButton}>저장</StBtnSave>
@@ -129,3 +151,21 @@ const StBtnCancel = styled.button`
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-color: aliceblue;
 `;
+const StInputImg = styled.input`
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  width: 78%;
+  color: #999999;
+`;
+const StLabelImg = styled.label`
+display: inline-block;
+padding: 10px 20px;
+color: #fff;
+vertical-align: middle;
+cursor: pointer;
+height: 40px;
+margin-left: 10px;
+`
