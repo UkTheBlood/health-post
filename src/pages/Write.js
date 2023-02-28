@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { addPost } from '../api/post/postapi';
+import { addPost, getPosts } from '../api/post/postapi';
 
 function Write() {
   const [title, setTitle] = useState('');
@@ -51,6 +51,8 @@ function Write() {
     },
   });
 
+  // const { isLoading, isError, data } = useQuery('posts', getPosts);
+
   // 추가 버튼
   const addButton = () => {
     if (title !== '' && content !== '') {
@@ -69,6 +71,11 @@ function Write() {
       alert('제목과 내용을 모두 입력해주세요!!');
     }
   };
+
+  // if(isLoading) return <h1>로딩중...</h1>
+  // if(isError) return <h1>error 발생...</h1>
+
+  // console.log(data)
 
   return (
     <StDivWrap>

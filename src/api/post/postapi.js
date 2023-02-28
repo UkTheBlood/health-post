@@ -34,11 +34,18 @@ const deletePost = async (id) => {
 // 게시물 수정
 const updatePost = async ({ id, inputTitle, inputContent, image }) => {
   // 받아올 때도 중괄호
-  await axios.put(`${process.env.REACT_APP_SERVER}/api/posts/${id}`, {
-    title: `${inputTitle}`,
-    content: `${inputContent}`,
-    image: image,
-  });
+  await axios.put(
+    `${process.env.REACT_APP_SERVER}/api/posts/${id}`,
+    {
+      title: `${inputTitle}`,
+      content: `${inputContent}`,
+      image: image,
+    },
+    // header
+    {
+      'Content-Type': 'multipart/form-data',
+    }
+  );
 };
 
 // 좋아요 기능

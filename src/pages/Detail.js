@@ -114,6 +114,7 @@ function Detail() {
   if (isError) return <h1>에러 발생</h1>;
 
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
+  console.log(data);
 
   return (
     <>
@@ -139,17 +140,21 @@ function Detail() {
                 <StPContent>{data.content}</StPContent>
               </StDivContent>
               <StDivComment>
-                댓글 수 : 냅둡시다
+                <StPCommentsCount>댓글 수 : {data.commentsCount}</StPCommentsCount>
                 {likeState === false ? (
                   <>
-                    <p onClick={() => onClickLikeHandler(param.id)}>
-                      🤍 좋아요 : {data.likes}
-                    </p>
+                    <StPLike onClick={() => onClickLikeHandler(param.id)}>
+                      🤍
+                    </StPLike>
+                    좋아요 : {data.likesCount}
                   </>
                 ) : (
-                  <p onClick={() => onClickLikeHandler(param.id)}>
-                    💓 좋아요 : {data.likes}
-                  </p>
+                  <>
+                    <StPLike onClick={() => onClickLikeHandler(param.id)}>
+                      💓{' '}
+                    </StPLike>
+                    좋아요 : {data.likesCount}
+                  </>
                 )}
                 {/* 댓글 수 백엔드에 없음 */}
               </StDivComment>
@@ -182,7 +187,6 @@ function Detail() {
                 onChange={onChangeTextareaContentHandler}
                 type="text"
                 defaultValue={data.content}
-                // value={inputContent}
                 placeholder="내용을 수정해주세요!"
               />
             </StDivContent>
@@ -315,3 +319,11 @@ const StBtnSave = styled.button`
   background-color: #609966;
   margin: 20px 20px 10px auto;
 `;
+const StPLike = styled.p`
+  display: inline;
+  width: 100px;
+  margin-left: auto;
+`;
+const StPCommentsCount = styled.p`
+  margin-right: 20px;
+`

@@ -212,7 +212,7 @@ const StDivCommentContainer = styled.div`
   align-items: center;
 `;
 const StPNickname = styled.p`
-  width: 70px;
+  width: 100px;
   text-align: center;
 `;
 const StPComment = styled.p`
@@ -227,6 +227,7 @@ const StBtnUpdateComment = styled.button`
   border: none;
   border-radius: 10px;
   margin-left: auto;
+  margin-right: 10px;
   transition: 0.15s ease-in-out;
   :hover {
     cursor: pointer;
