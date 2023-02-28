@@ -1,25 +1,36 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+const cookie = new Cookies();
+export const getCookie = (name) => {
+  return cookie.get(name);
+};
+
+console.log(getCookie);
 
 function Login() {
-  const [state, setState] = useState({ id: '', pw: '' });
-  const [, setCookie] = useCookies(['userToken']);
+  const [state, setState] = useState({ username: '', password: '' });
+  // const [, setCookie] = useCookies(['userToken']);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const { data } = await axios.post(
-        'http://13.209.86.39:3003/api/login',
+      const data = await axios.post(
+        `${process.env.REACT_APP_SERVER}/api/login`,
         state
       );
-      setCookie('userToken', data.token);
+      // setCookie('userToken', data.token);
       alert('로그인 성공!');
+      console.log(data);
+      navigate('/');
     } catch (error) {
-      console.error(error);
       // 에러메시지
     }
   };
+  // 아이디 이메일형식으로 수정, 중복여부 버튼 만들어보기
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,17 +43,17 @@ function Login() {
       <div>
         <StInput
           type="text"
-          name="id"
+          name="username"
           placeholder="아이디"
-          value={state.id}
+          value={state.username}
           onChange={handleChange}
         />
         <br />
         <StInput
           type="password"
-          name="pw"
+          name="password"
           placeholder="비밀번호"
-          value={state.pw}
+          value={state.password}
           onChange={handleChange}
         />
         <br />
