@@ -12,8 +12,11 @@ export const instance = axios.create({
 
 // 게시물 추가
 const addPost = async (newPost) => {
-  await instance.post(`/api/posts`, newPost, {
-    'Content-Type': 'multipart/form-data',
+  await axios.post(`${process.env.REACT_APP_SERVER}/api/posts`, newPost, {
+    // 'Content-Type': 'multipart/form-data',
+    headers: {
+      authorization: `Bearer ${getCookie('userToken')}`,
+    },
   });
 };
 
@@ -26,12 +29,15 @@ const getPosts = async () => {
 // 상세 게시물 조회
 const getDetailPost = async (id) => {
   const postId = Number(id);
-  const detailresponse = await axios.get(`${process.env.REACT_APP_SERVER}/api/posts/${postId}`, {
-    headers: {
-      authorization: `Bearer ${getCookie('userToken')}`,
+  const detailresponse = await axios.get(
+    `${process.env.REACT_APP_SERVER}/api/posts/${postId}`,
+    {
+      headers: {
+        authorization: `Bearer ${getCookie('userToken')}`,
+      },
     }
-  });
-  console.log("detailresponse", detailresponse)
+  );
+  console.log('detailresponse', detailresponse);
   return detailresponse.data.data;
 };
 
