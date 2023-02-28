@@ -11,7 +11,8 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      await axios.post('http://13.209.86.39:3003/api/signup', {
+      await axios.post('http://13.209.86.39:3001/api/signup', {
+        username: state.id,
         nickname: state.nickname,
         password: state.pw,
         confirmPassword: state.pw,
