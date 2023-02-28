@@ -2,12 +2,12 @@ import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
 
-export const setCookie = () => {
-  return cookies.set();
+export const setCookie = (name) => {
+  return cookies.set(name);
 };
-export const getCookie = () => {
-  return cookies.get();
+export const getCookie = (name) => {
+  return cookies.get(name);
 };
-export const removeCookie = () => {
-  return cookies.remove();
+export const removeCookie = (name) => {
+  return cookies.remove(name);
 };
