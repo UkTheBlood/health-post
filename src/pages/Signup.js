@@ -12,7 +12,7 @@ function Signup() {
   const handleSignup = async () => {
     try {
       await axios.post(`${process.env.REACT_APP_SERVER}/api/signup`, {
-        username: state.id,
+        email: state.id,
         nickname: state.nickname,
         password: state.pw,
       });
@@ -22,7 +22,6 @@ function Signup() {
       // 에러메시지
     }
   };
-  console.log(state);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState((prevState) => ({ ...prevState, [name]: value }));
