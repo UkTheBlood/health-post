@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies, useCookies } from 'react-cookie';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { setCookie } from '../until/cookie/index';
+import { getCookie, setCookie } from '../until/cookie/index';
 
 function Login() {
   const [state, setState] = useState({ email: '', password: '' });
@@ -17,12 +17,12 @@ function Login() {
         `${process.env.REACT_APP_SERVER}/api/login`,
         state
       );
-      const jwtToken = data;
+    
+      const jwtToken = data.data.token;
+      console.log("jwtToken", jwtToken)
 
       // jwtToken 을 userToken으로 지정 => 쿠키에 토큰 저장
-      setCookie('userToken', jwtToken, {
-        path: '/',
-      });
+      setCookie('userToken', jwtToken);
       // const decodedUserInfo = jwt_decode(jwtToken);
 
       // 토큰에 저장되어있는 userInfo 저장

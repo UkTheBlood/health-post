@@ -28,7 +28,7 @@ function Detail() {
   };
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
-  const { isLoading, isError, data } = useQuery('detailposts', () =>
+  const { isLoading, isError, data, error } = useQuery('detailposts', () =>
     getDetailPost(param.id)
   );
 
@@ -111,7 +111,10 @@ function Detail() {
   };
 
   if (isLoading) return <h1>로딩중</h1>;
+  
+  // console.log(error)
   if (isError) return <h1>에러 발생</h1>;
+
 
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
   console.log(data);
@@ -137,7 +140,10 @@ function Detail() {
               </StDivTitle>
               <hr />
               <StDivContent>
-                <StPContent>{data.content}</StPContent>
+                <StPContent>
+                  {/* <img src=`${data.image}`></img> */}
+                  {data.content}
+                  </StPContent>
               </StDivContent>
               <StDivComment>
                 <StPCommentsCount>댓글 수 : {data.commentsCount}</StPCommentsCount>
