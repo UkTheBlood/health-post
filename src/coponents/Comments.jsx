@@ -16,7 +16,6 @@ function Comments() {
   const { isLoading, isError, data } = useQuery('comments', () => {
     return getComments(params.id);
   });
-  console.log("data",data)
 
   // 댓글 추가
   const [content, setContent] = useState('');
@@ -67,7 +66,7 @@ function Comments() {
   const addCommentButton = (id, content) => {
     if (content !== '') {
       const newContent = {
-        content: content,
+        comment: content,
       };
       alert('댓글이 추가되었습니다!');
       setContent('');
@@ -147,7 +146,7 @@ function Comments() {
                 <>
                   <StInputUpdateComment
                     type="text"
-                    defaultValue={comments.content}
+                    defaultValue={comments.comment}
                     onChange={onChangeUpdateComment}
                     placeholder="댓글을 수정해주세요!"
                   />
