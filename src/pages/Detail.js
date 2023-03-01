@@ -17,7 +17,6 @@ function Detail() {
   const navigate = useNavigate();
 
   const [contentState, setContentState] = useState(false);
-  const [likeState, setLikeState] = useState(false);
   const [image, setImage] = useState('');
 
   const onChangeInputTitleHandler = (e) => {
@@ -28,7 +27,7 @@ function Detail() {
   };
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
-  const { isLoading, isError, data, error } = useQuery('detailposts', () =>
+  const { isLoading, isError, data } = useQuery('detailposts', () =>
     getDetailPost(param.id)
   );
 
@@ -64,7 +63,6 @@ function Detail() {
 
   // 좋아요 버튼
   const onClickLikeHandler = (id) => {
-    setLikeState(!likeState);
     likemutation.mutate(id);
   };
 
@@ -111,13 +109,10 @@ function Detail() {
   };
 
   if (isLoading) return <h1>로딩중</h1>;
-  
-  // console.log(error)
+
   if (isError) return <h1>에러 발생</h1>;
 
-
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
-  console.log(data);
 
   return (
     <>
@@ -143,11 +138,13 @@ function Detail() {
                 <StPContent>
                   {/* <img src=`${data.image}`></img> */}
                   {data.content}
-                  </StPContent>
+                </StPContent>
               </StDivContent>
               <StDivComment>
-                <StPCommentsCount>댓글 수 : {data.commentsCount}</StPCommentsCount>
-                {likeState === false ? (
+                <StPCommentsCount>
+                  댓글 수 : {data.commentsCount}
+                </StPCommentsCount>
+                {data.likeState === false ? (
                   <>
                     <StPLike onClick={() => onClickLikeHandler(param.id)}>
                       🤍
@@ -332,4 +329,4 @@ const StPLike = styled.p`
 `;
 const StPCommentsCount = styled.p`
   margin-right: 20px;
-`
+`;

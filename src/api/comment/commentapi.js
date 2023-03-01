@@ -2,32 +2,60 @@
 import axios from 'axios';
 import { getCookie } from '../../until/cookie';
 
-export const instance = axios.create({
-  baseURL: process.env.REACT_APP_SERVER,
-  headers: {
-    Authorization: `Bearer ${getCookie('userToken')}`,
-  },
-});
 
 // 댓글 조회 기능
 export const getComments = async (id) => {
-  const response = await instance.get(`/api/posts/${id}/comments`);
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER}/api/posts/${id}/comments`,
+    {
+      headers: {
+        authorization: `Bearer ${getCookie('userToken')}`,
+      },
+    }
+  );
+
   return response.data.comments;
 };
 
 // 댓글 추가 기능
 export const addComment = async ({ id, newContent }) => {
-  await instance.post(`/api/posts/${id}/comments`, newContent);
+
+  await axios.post(
+    `${process.env.REACT_APP_SERVER}/api/posts/${id}/comments`,
+    newContent,
+    {
+      headers: {
+        authorization: `Bearer ${getCookie('userToken')}`,
+      },
+    }
+  );
+
 };
 
 // 댓글 수정 기능       /api/comments/:commentId
 export const updateComment = async ({ id, content }) => {
-  await instance.put(`/api/comments/${id}`, {
-    content: `${content}`,
-  });
+
+  await axios.put(
+    `${process.env.REACT_APP_SERVER}/api/comments/${id}`,
+    {
+      comment: content,
+    },
+    {
+      headers: {
+        authorization: `Bearer ${getCookie('userToken')}`,
+      },
+    }
+  );
+
 };
 
 // 댓글 삭제 기능
 export const deleteComment = async (id) => {
-  await instance.delete(`/api/comments/${id}`);
+
+  await axios.delete(`${process.env.REACT_APP_SERVER}/api/comments/${id}`, {
+    headers: {
+      authorization: `Bearer ${getCookie('userToken')}`,
+    },
+  });
+
 };
