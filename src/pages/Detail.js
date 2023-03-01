@@ -12,6 +12,9 @@ import Comments from '../coponents/Comments';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
+// const isSameUser = comment.userId === userID
+// isSameUser && <Button></Button>
+
 function Detail() {
   const param = useParams(); // param -> url의 id(string)
   const navigate = useNavigate();
