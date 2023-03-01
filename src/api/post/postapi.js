@@ -37,31 +37,35 @@ const getDetailPost = async (id) => {
       },
     }
   );
-  console.log('detailresponse', detailresponse);
   return detailresponse.data.data;
 };
-
-// console.log("getCookie", getCookie('userToken'))
 
 // 게시물 삭제
 const deletePost = async (id) => {
   const postId = Number(id);
-  await instance.delete(`/api/posts/${postId}`);
+  await axios.delete(`${process.env.REACT_APP_SERVER}/api/posts/${postId}`, {
+    headers: {
+      authorization: `Bearer ${getCookie('userToken')}`,
+    },
+  });
 };
 
 // 게시물 수정
 const updatePost = async ({ id, inputTitle, inputContent, image }) => {
   // 받아올 때도 중괄호
-  await instance.put(
-    `/api/posts/${id}`,
+  await axios.put(
+    `${process.env.REACT_APP_SERVER}/api/posts/${id}`,
     {
       title: `${inputTitle}`,
       content: `${inputContent}`,
-      image: image,
+      // image: image,
     },
     // header
     {
-      'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'multipart/form-data',
+      headers: {
+        authorization: `Bearer ${getCookie('userToken')}`,
+      },
     }
   );
 };
@@ -69,7 +73,11 @@ const updatePost = async ({ id, inputTitle, inputContent, image }) => {
 // 좋아요 기능
 const likeUp = async (id) => {
   const postId = Number(id);
-  await instance.put(`/api/likes/posts/${postId}`);
+  await axios.put(`${process.env.REACT_APP_SERVER}/api/likes/posts/${postId}`, {
+    headers: {
+      authorization: `Bearer ${getCookie('userToken')}`,
+    },
+  });
 };
 
 export { getPosts, addPost, deletePost, getDetailPost, updatePost, likeUp };
