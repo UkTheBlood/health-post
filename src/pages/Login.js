@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Cookies, useCookies } from 'react-cookie';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getCookie, setCookie } from '../until/cookie/index';
+import jwtDecode from 'jwt-decode';
 
 function Login() {
   const [state, setState] = useState({ email: '', password: '' });
@@ -17,20 +18,22 @@ function Login() {
         `${process.env.REACT_APP_SERVER}/api/login`,
         state
       );
-    
+
       const jwtToken = data.data.token;
-      console.log("jwtToken", jwtToken)
 
       // jwtToken 을 userToken으로 지정 => 쿠키에 토큰 저장
       setCookie('userToken', jwtToken);
-      // const decodedUserInfo = jwt_decode(jwtToken);
+
+      alert('로그인 성공!');
+
+      const decodedUserInfo = jwtDecode(jwtToken);
+      console.log(decodedUserInfo);
 
       // 토큰에 저장되어있는 userInfo 저장
-      // localStorage.setItem('userInfo', JSON.stringify(decodedUserInfo));
+      localStorage.setItem('userInfo', JSON.stringify(decodedUserInfo));
 
-      console.log('data', data);
-      alert('로그인 성공!');
       navigate('/');
+      return data;
     } catch (error) {
       // 에러메시지
     }

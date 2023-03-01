@@ -15,15 +15,6 @@ function Main() {
       <div>
         <StDivWrite>
           <StPPost>게시물 ({data.length})</StPPost>
-          <Link to={'/login'}  style={{ textDecoration: "none" }}>
-            <StPWrite>로그인</StPWrite>
-          </Link>
-          <Link to={'/signup'} style={{ textDecoration: "none" }}>
-            <StPWrite>회원가입</StPWrite>
-          </Link>
-          <Link to={'/write'} style={{ textDecoration: "none" }}>
-            <StPWrite>글쓰러 가기</StPWrite>
-          </Link>
         </StDivWrite>
       </div>
       <div>
@@ -54,34 +45,17 @@ const StDivWrap = styled.div`
 `;
 
 const StDivWrite = styled.div`
-  height: 50px;
   display: flex;
-  margin-bottom: 80px;
 `;
 const StPPost = styled.p`
   margin-right: auto;
-  width: 130px;
-  height: 50px;
-  line-height: 50px;
   text-align: center;
   font-size: 20px;
-`;
-const StPWrite = styled.p`
-  color: black;
-  text-decoration: none;
-  margin-left: 30px;
-  width: 130px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-size: 18px;
-  background-color: antiquewhite;
-  border-radius: 10px;
 `;
 const StDivContainer = styled.div`
   width: 600px;
   height: 40px;
-  margin: 40px auto 0px auto;
+  margin: 20px auto 0px auto;
   border: 1px solid rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 20px;
