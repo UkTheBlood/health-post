@@ -52,12 +52,22 @@ function Comments() {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
     },
+    onError: (err) => {
+      if (err.response.status === 403) {
+        alert('자신이 작성한 댓글만 수정할 수 있습니다');
+      }
+    },
   });
 
-  // 삭제하는 리액트 쿼리
+  // 댓글 삭제하는 리액트 쿼리
   const deleteCommentMutation = useMutation(deleteComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
+    },
+    onError: (err) => {
+      if (err.response.status === 403) {
+        alert('자신이 작성한 댓글만 수정할 수 있습니다');
+      }
     },
   });
 
@@ -106,6 +116,7 @@ function Comments() {
 
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
+  console.log(data);
 
   return (
     <StDivWrap>
@@ -149,7 +160,9 @@ function Comments() {
                     onChange={onChangeUpdateComment}
                     placeholder="댓글을 수정해주세요!"
                   />
-                  <StBtnUpdateComment onClick={commentCencleButton}>취소</StBtnUpdateComment>
+                  <StBtnUpdateComment onClick={commentCencleButton}>
+                    취소
+                  </StBtnUpdateComment>
                   <StBtnUpdateComment
                     onClick={() =>
                       updateCommentButton(comments.commentId, comment)
