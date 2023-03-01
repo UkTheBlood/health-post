@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../until/cookie';
 
-
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER,
   headers: {
@@ -31,24 +30,14 @@ const getPosts = async () => {
 // 상세 게시물 조회
 const getDetailPost = async (id) => {
   const postId = Number(id);
-  const detailresponse = await axios
-    .get(`${process.env.REACT_APP_SERVER}/api/posts/${postId}`, {
+  const detailresponse = await axios.get(
+    `${process.env.REACT_APP_SERVER}/api/posts/${postId}`,
+    {
       headers: {
         authorization: `Bearer ${getCookie('userToken')}`,
       },
-    })
-    // .then((res) => {
-    //   console.log(res);
-    // })
-    // .catch((err) => {
-      // alert(err.response.data.message);
-      // const navigate = useNavigate()
-      // navigate('/')
-      // console.log(err.response.status)
-      // if(err.response.status === 401) {
-      //   alert("로그인 후에 이용 가능합니다")
-      // }
-    // });
+    }
+  );
   return detailresponse.data.data;
 };
 
@@ -65,6 +54,7 @@ const deletePost = async (id) => {
 // 게시물 수정
 const updatePost = async ({ id, inputTitle, inputContent, image }) => {
   // 받아올 때도 중괄호
+  console.log(inputContent, inputTitle);
   await axios.put(
     `${process.env.REACT_APP_SERVER}/api/posts/${id}`,
     {

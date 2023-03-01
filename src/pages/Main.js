@@ -1,39 +1,31 @@
-import React, { useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import React from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { addPost, getPosts } from '../api/post/postapi';
+import { getPosts } from '../api/post/postapi';
 
 function Main() {
   const { isLoading, isError, data } = useQuery('posts', getPosts);
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
+  console.log(data)
 
   return (
     <StDivWrap>
       <div>
         <StDivWrite>
           <StPPost>게시물 ({data.length})</StPPost>
-          <Link to={'/login'}>
-            <StPWrite>로그인</StPWrite>
-          </Link>
-          <Link to={'/signup'}>
-            <StPWrite>회원가입</StPWrite>
-          </Link>
-          <Link to={'/write'}>
-            <StPWrite>글쓰러 가기</StPWrite>
-          </Link>
         </StDivWrite>
       </div>
       <div>
         <div>
           {data.map((posts) => {
             return (
-              <Link to={`/detail/${posts.postId}`} key={posts.postId}>
+              <Link to={`/detail/${posts.postId}`} key={posts.postId}  style={{ textDecoration: "none" }}>
                 <StDivContainer>
                   <StPTitle>{posts.title}</StPTitle>
-                  <StPLike>👍 {posts.likes}</StPLike>
+                  <StPLike>💓 {posts.likesCount}</StPLike>
                 </StDivContainer>
               </Link>
             );
@@ -51,38 +43,20 @@ const StDivWrap = styled.div`
 `;
 
 const StDivWrite = styled.div`
-  height: 50px;
   display: flex;
-  margin-bottom: 80px;
 `;
 const StPPost = styled.p`
   margin-right: auto;
-  width: 130px;
-  height: 50px;
-  line-height: 50px;
   text-align: center;
   font-size: 20px;
-`;
-const StPWrite = styled.p`
-  color: black;
-  text-decoration: none;
-  margin-left: 30px;
-  width: 130px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-size: 18px;
-  background-color: antiquewhite;
-  border-radius: 10px;
 `;
 const StDivContainer = styled.div`
   width: 600px;
   height: 40px;
-  margin: 40px auto 0px auto;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  margin: 30px auto 0px auto;
   padding: 20px;
   border-radius: 20px;
-
+  background-color: #5D93AB;
   display: flex;
 `;
 const StPTitle = styled.p`
