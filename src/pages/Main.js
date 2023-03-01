@@ -9,20 +9,27 @@ function Main() {
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
-  console.log(data)
+  console.log(data);
 
   return (
     <StDivWrap>
       <div>
         <StDivWrite>
           <StPPost>게시물 ({data.length})</StPPost>
+          <Link to={'/write'}>
+            <StBtnWrite>게시물 작성</StBtnWrite>
+          </Link>
         </StDivWrite>
       </div>
       <div>
         <div>
           {data.map((posts) => {
             return (
-              <Link to={`/detail/${posts.postId}`} key={posts.postId}  style={{ textDecoration: "none" }}>
+              <Link
+                to={`/detail/${posts.postId}`}
+                key={posts.postId}
+                style={{ textDecoration: 'none' }}
+              >
                 <StDivContainer>
                   <StPTitle>{posts.title}</StPTitle>
                   <StPLike>💓 {posts.likesCount}</StPLike>
@@ -45,6 +52,15 @@ const StDivWrap = styled.div`
 const StDivWrite = styled.div`
   display: flex;
 `;
+const StBtnWrite = styled.button`
+  margin-left: auto;
+  width: 120px;
+  height: 35px;
+  border-radius: 10px;
+  border: none;
+  background-color: #5d93ab;
+  color: white;
+`;
 const StPPost = styled.p`
   margin-right: auto;
   text-align: center;
@@ -56,7 +72,7 @@ const StDivContainer = styled.div`
   margin: 30px auto 0px auto;
   padding: 20px;
   border-radius: 20px;
-  background-color: #5D93AB;
+  background-color: #5d93ab;
   display: flex;
 `;
 const StPTitle = styled.p`
