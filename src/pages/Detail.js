@@ -27,7 +27,7 @@ function Detail() {
   };
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
-  const { isLoading, isError, data, error } = useQuery('detailposts', () =>
+  const { isLoading, isError, data } = useQuery('detailposts', () =>
     getDetailPost(param.id)
   );
 
