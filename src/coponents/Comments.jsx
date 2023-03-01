@@ -44,7 +44,6 @@ function Comments() {
   const addCommentMutation = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
-      console.log('성공!');
     },
   });
 

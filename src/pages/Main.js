@@ -15,13 +15,13 @@ function Main() {
       <div>
         <StDivWrite>
           <StPPost>게시물 ({data.length})</StPPost>
-          <Link to={'/login'}>
+          <Link to={'/login'}  style={{ textDecoration: "none" }}>
             <StPWrite>로그인</StPWrite>
           </Link>
-          <Link to={'/signup'}>
+          <Link to={'/signup'} style={{ textDecoration: "none" }}>
             <StPWrite>회원가입</StPWrite>
           </Link>
-          <Link to={'/write'}>
+          <Link to={'/write'} style={{ textDecoration: "none" }}>
             <StPWrite>글쓰러 가기</StPWrite>
           </Link>
         </StDivWrite>
@@ -30,7 +30,7 @@ function Main() {
         <div>
           {data.map((posts) => {
             return (
-              <Link to={`/detail/${posts.postId}`} key={posts.postId}>
+              <Link to={`/detail/${posts.postId}`} key={posts.postId}  style={{ textDecoration: "none" }}>
                 <StDivContainer>
                   <StPTitle>{posts.title}</StPTitle>
                   <StPLike>👍 {posts.likes}</StPLike>
@@ -46,6 +46,9 @@ function Main() {
 
 export default Main;
 
+// const StLink = styled.Link`
+//   text-decoration: none;
+// `
 const StDivWrap = styled.div`
   margin: 30px;
 `;
