@@ -17,9 +17,9 @@ function Login() {
         `${process.env.REACT_APP_SERVER}/api/login`,
         state
       );
-    
+
       const jwtToken = data.data.token;
-      console.log("jwtToken", jwtToken)
+      console.log('jwtToken', jwtToken);
 
       // jwtToken 을 userToken으로 지정 => 쿠키에 토큰 저장
       setCookie('userToken', jwtToken);
