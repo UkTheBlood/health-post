@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getUser, removeUser } from '../until/localstorage';
+import { FaHome } from 'react-icons/fa';
 
 function Header() {
   const userInfo = getUser();
@@ -20,7 +21,7 @@ function Header() {
   return (
     <StDivWrap>
       <Link to={'/'} style={{ textDecoration: 'none' }}>
-        <StPLogo>HOME</StPLogo>
+        <StPLogo><FaHome></FaHome></StPLogo>
       </Link>
       {userInfo ? (
         <StBtnlogout onClick={() => logoutHandler()}>로그아웃</StBtnlogout>
