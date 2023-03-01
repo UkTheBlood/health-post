@@ -2,7 +2,6 @@
 import axios from 'axios';
 import { getCookie } from '../../until/cookie';
 
-
 // 댓글 조회 기능
 export const getComments = async (id) => {
   const response = await axios.get(
@@ -19,7 +18,6 @@ export const getComments = async (id) => {
 
 // 댓글 추가 기능
 export const addComment = async ({ id, newContent }) => {
-
   await axios.post(
     `${process.env.REACT_APP_SERVER}/api/posts/${id}/comments`,
     newContent,
@@ -29,12 +27,10 @@ export const addComment = async ({ id, newContent }) => {
       },
     }
   );
-
 };
 
 // 댓글 수정 기능       /api/comments/:commentId
 export const updateComment = async ({ id, content }) => {
-
   await axios.put(
     `${process.env.REACT_APP_SERVER}/api/comments/${id}`,
     {
@@ -46,16 +42,13 @@ export const updateComment = async ({ id, content }) => {
       },
     }
   );
-
 };
 
 // 댓글 삭제 기능
 export const deleteComment = async (id) => {
-
   await axios.delete(`${process.env.REACT_APP_SERVER}/api/comments/${id}`, {
     headers: {
       authorization: `Bearer ${getCookie('userToken')}`,
     },
   });
-
 };
