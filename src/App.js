@@ -3,7 +3,14 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+      }
+    }
+  }
+  );
 
   return (
     <CookiesProvider>

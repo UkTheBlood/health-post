@@ -44,7 +44,6 @@ function Comments() {
   const addCommentMutation = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
-      console.log('성공!');
     },
   });
 
@@ -53,12 +52,22 @@ function Comments() {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
     },
+    onError: (err) => {
+      if (err.response.status === 403) {
+        alert('자신이 작성한 댓글만 수정할 수 있습니다');
+      }
+    },
   });
 
-  // 삭제하는 리액트 쿼리
+  // 댓글 삭제하는 리액트 쿼리
   const deleteCommentMutation = useMutation(deleteComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
+    },
+    onError: (err) => {
+      if (err.response.status === 403) {
+        alert('자신이 작성한 댓글만 수정할 수 있습니다');
+      }
     },
   });
 
@@ -107,12 +116,12 @@ function Comments() {
 
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
+  console.log(data);
 
   return (
     <StDivWrap>
       {/* 댓글 작성 */}
       <StDivAddcomment>
-        <StPAddcomment></StPAddcomment>
         <StInputAddcommnet
           onChange={onChangeCommentHandler}
           value={content}
@@ -150,7 +159,9 @@ function Comments() {
                     onChange={onChangeUpdateComment}
                     placeholder="댓글을 수정해주세요!"
                   />
-                  <StBtnUpdateComment onClick={commentCencleButton}>취소</StBtnUpdateComment>
+                  <StBtnUpdateComment onClick={commentCencleButton}>
+                    취소
+                  </StBtnUpdateComment>
                   <StBtnUpdateComment
                     onClick={() =>
                       updateCommentButton(comments.commentId, comment)
@@ -174,19 +185,17 @@ const StDivWrap = styled.div`
   width: 600px;
   margin: 0px auto 400px auto;
   padding: 20px;
-  border: 1px solid antiquewhite;
+  border: 2px solid #626FC2;
   border-radius: 10px;
 `;
 const StDivAddcomment = styled.div`
-  background-color: antiquewhite;
+  background-color: #5D93AB;
   border-radius: 10px;
   padding: 10px;
   display: flex;
   align-items: center;
 `;
-const StPAddcomment = styled.p`
-  margin-left: 10px;
-`;
+
 const StInputAddcommnet = styled.input`
   width: 350px;
   height: 10px;
@@ -200,7 +209,7 @@ const StBtnAddcomment = styled.button`
   height: 30px;
   border-radius: 10px;
   border: none;
-  background-color: #9dc08b;
+  background-color: #9EB3C2;
 `;
 const StDivCommentsWrap = styled.div`
   margin-top: 20px;
@@ -222,15 +231,16 @@ const StPComment = styled.p`
 const StBtnUpdateComment = styled.button`
   width: 70px;
   height: 30px;
-  background-color: #e8d5c4;
+  background-color: #1C7293;
   border: none;
   border-radius: 10px;
   margin-left: auto;
   margin-right: 10px;
   transition: 0.15s ease-in-out;
+  color: white;
   :hover {
     cursor: pointer;
-    background-color: #111;
+    background-color: #1E2554;
     color: #e8d5c4;
   }
 `;

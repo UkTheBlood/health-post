@@ -12,6 +12,9 @@ import Comments from '../coponents/Comments';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
+// const isSameUser = comment.userId === userID
+// isSameUser && <Button></Button>
+
 function Detail() {
   const param = useParams(); // param -> url의 id(string)
   const navigate = useNavigate();
@@ -27,8 +30,18 @@ function Detail() {
   };
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
-  const { isLoading, isError, data } = useQuery('detailposts', () =>
-    getDetailPost(param.id)
+  const { isLoading, isError, data } = useQuery(
+    'detailposts',
+    () => getDetailPost(param.id),
+    {
+      onError: (error) => {
+        console.log(error.response.status);
+        if (error.response.status === 401) {
+          alert('로그인 이후에 사용 가능합니다');
+          navigate('/');
+        }
+      },
+    }
   );
 
   const [inputTitle, setInputTitle] = useState(data?.title);
@@ -42,8 +55,11 @@ function Detail() {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
     },
-    onError: () => {
-      alert(isError);
+    onError: (error) => {
+      // console.log(error.response.status);
+      if (error.response.status === 400) {
+        alert('게시글 삭제에 실패했습니다. 삭제할 권환이 없습니다.');
+      }
     },
   });
 
@@ -51,6 +67,11 @@ function Detail() {
   const updatemutation = useMutation(updatePost, {
     onSuccess: () => {
       queryClient.invalidateQueries('detailposts');
+    },
+    onError: (error) => {
+      if (error.response.status === 400) {
+        alert('게시글 삭제에 실패했습니다. 삭제할 권환이 없습니다.');
+      }
     },
   });
 
@@ -219,7 +240,7 @@ const StDivContentWrap = styled.div`
   margin: 40px auto;
   padding: 10px 20px;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 3px solid #626FC2;
 `;
 const StDivWriter = styled.div`
   display: flex;
@@ -267,7 +288,8 @@ const StBtnView = styled.button`
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #9dc08b;
+  background-color: #5D93AB;
+  color: white;
 `;
 const StBtnPostUpdate = styled.button`
   width: 60px;
@@ -280,14 +302,6 @@ const StBtnPostUpdate = styled.button`
   :hover {
     color: black;
   }
-`;
-const StBtnPostDelete = styled.button`
-  width: 60px;
-  height: 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: white;
-  color: rgba(0, 0, 0, 0.6);
 `;
 
 const StInputTitle = styled.input`

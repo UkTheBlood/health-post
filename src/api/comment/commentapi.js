@@ -13,7 +13,7 @@ export const getComments = async (id) => {
     }
   );
 
-  return response.data.comments;
+  return response.data.data;
 };
 
 // 댓글 추가 기능
