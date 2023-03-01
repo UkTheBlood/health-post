@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import React from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { addPost, getPosts } from '../api/post/postapi';
+import { getPosts } from '../api/post/postapi';
 
 function Main() {
   const { isLoading, isError, data } = useQuery('posts', getPosts);
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
+  console.log(data)
 
   return (
     <StDivWrap>
@@ -24,7 +25,7 @@ function Main() {
               <Link to={`/detail/${posts.postId}`} key={posts.postId}  style={{ textDecoration: "none" }}>
                 <StDivContainer>
                   <StPTitle>{posts.title}</StPTitle>
-                  <StPLike>👍 {posts.likes}</StPLike>
+                  <StPLike>💓 {posts.likesCount}</StPLike>
                 </StDivContainer>
               </Link>
             );
@@ -37,9 +38,6 @@ function Main() {
 
 export default Main;
 
-// const StLink = styled.Link`
-//   text-decoration: none;
-// `
 const StDivWrap = styled.div`
   margin: 30px;
 `;
@@ -55,11 +53,10 @@ const StPPost = styled.p`
 const StDivContainer = styled.div`
   width: 600px;
   height: 40px;
-  margin: 20px auto 0px auto;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  margin: 30px auto 0px auto;
   padding: 20px;
   border-radius: 20px;
-
+  background-color: #5D93AB;
   display: flex;
 `;
 const StPTitle = styled.p`

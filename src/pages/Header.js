@@ -42,24 +42,25 @@ function Header() {
 export default Header;
 
 const StDivWrap = styled.div`
-  height: 50px;
+  height: 70px;
   padding: 5px;
   text-align: center;
-  background-color: antiquewhite;
+  background-color: #114B79;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 const StPLogo = styled.p`
-  font-size: 33px;
-  color: black;
+  font-size: 38px;
+  color: #9EB3C2;
   margin-left: 20px;
 `;
 const StBtnlogout = styled.button`
   margin: 0px 20px 0px auto;
   width: 150px;
-  height: 40px;
+  height: 45px;
   border: none;
-  background-color: #9dc08b;
+  background-color: #5D93AB;
   border-radius: 10px;
+  color: white;
 `;

@@ -237,7 +237,7 @@ const StDivContentWrap = styled.div`
   margin: 40px auto;
   padding: 10px 20px;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 3px solid #626FC2;
 `;
 const StDivWriter = styled.div`
   display: flex;
@@ -285,7 +285,8 @@ const StBtnView = styled.button`
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #9dc08b;
+  background-color: #5D93AB;
+  color: white;
 `;
 const StBtnPostUpdate = styled.button`
   width: 60px;
@@ -298,14 +299,6 @@ const StBtnPostUpdate = styled.button`
   :hover {
     color: black;
   }
-`;
-const StBtnPostDelete = styled.button`
-  width: 60px;
-  height: 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: white;
-  color: rgba(0, 0, 0, 0.6);
 `;
 
 const StInputTitle = styled.input`
