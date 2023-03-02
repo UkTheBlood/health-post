@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 function Signup() {
   const [state, setState] = useState({
@@ -8,9 +9,7 @@ function Signup() {
     pw: '',
     nickname: '', // 초기값을 빈 문자열로 변경
   });
-
-  // const [idValid, setIdValid] = useState(false);
-  // const [nicknameValid, setNicknameValid] = useState(false);
+  const navigate = useNavigate();
 
   const handleIdCheck = async () => {
     if (!state.id) {
@@ -63,8 +62,11 @@ function Signup() {
         password: state.pw,
       });
       alert('회원가입 성공!');
+      navigate('/');
     } catch (error) {
-      alert(error.response.data);
+      alert(error.response.data.message);
+      // alert(error.response.data);
+
       // 에러메시지
     }
   };
