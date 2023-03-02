@@ -9,7 +9,10 @@ function Signup() {
     pw: '',
     nickname: '', // 초기값을 빈 문자열로 변경
   });
+
   const navigate = useNavigate();
+
+
 
   const handleIdCheck = async () => {
     if (!state.id) {
@@ -64,8 +67,8 @@ function Signup() {
       alert('회원가입 성공!');
       navigate('/');
     } catch (error) {
+
       alert(error.response.data.message);
-      // alert(error.response.data);
 
       // 에러메시지
     }
