@@ -11,7 +11,6 @@ import {
 import Comments from '../coponents/Comments';
 import { getUser } from '../until/localstorage';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { FcComments } from "react-icons/fc";
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
@@ -136,8 +135,10 @@ function Detail() {
   };
 
   if (isLoading) return <h1>로딩중</h1>;
-
   if (isError) return <h1>에러 발생</h1>;
+
+  console.log(data.userId);
+  console.log(userInfo.userId);
 
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
 
@@ -151,19 +152,24 @@ function Detail() {
                 <StPWriter>작성자 : {data.nickname}</StPWriter>
                 <p>{datadate}</p>
               </StDivWriter>
-              <StBtnPostUpdate onClick={() => setContentState(true)}>
-                수정
-              </StBtnPostUpdate>
-              <StBtnPostUpdate onClick={() => deleteButton(data.postId)}>
-                삭제
-              </StBtnPostUpdate>
+              {data.userId === userInfo.userId ? (
+                <>
+                  <StBtnPostUpdate onClick={() => setContentState(true)}>
+                    수정
+                  </StBtnPostUpdate>
+                  <StBtnPostUpdate onClick={() => deleteButton(data.postId)}>
+                    삭제
+                  </StBtnPostUpdate>
+                </>
+              ) : null}
+
               <StDivTitle>
                 <StH1Title>{data.title}</StH1Title>
               </StDivTitle>
               <hr />
               <StDivContent>
                 <StPContent>
-                  <img src={data.fileUrl}></img>
+                  <StImg src={data.fileUrl}></StImg>
                   {data.content}
                 </StPContent>
               </StDivContent>
@@ -282,6 +288,11 @@ const StH1Title = styled.p`
 `;
 const StPContent = styled.p`
   line-height: 20px;
+  display: flex;
+`;
+const StImg = styled.img`
+  width: 150px;
+  height: 150px;
 `;
 const StDivComment = styled.div`
   text-align: right;
@@ -312,7 +323,6 @@ const StBtnPostUpdate = styled.button`
     color: black;
   }
 `;
-
 const StInputTitle = styled.input`
   width: 520px;
   height: 18px;
@@ -358,7 +368,7 @@ const StPCommentIcon = styled.p`
   display: inline;
   margin-right: 10px;
   font-size: 22px;
-`
+`;
 const StPCommentsCount = styled.p`
   margin-right: 20px;
 `;

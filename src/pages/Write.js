@@ -74,7 +74,7 @@ function Write() {
       // console.log('formData', formData.get('image'));
       // console.log('inside image', image);
 
-      for (const keyValue of formData) console.log('keyValue', keyValue);
+      // for (const keyValue of formData) console.log('keyValue', keyValue);
       setTitle('');
       setContent('');
       navigate('/');
