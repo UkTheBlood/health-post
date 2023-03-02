@@ -22,18 +22,15 @@ function Signup() {
       await axios.get(
         `${process.env.REACT_APP_SERVER}/api/check/email?email=${state.id}`
       );
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (emailRegex.test(state.id) === false) {
+        alert('유효한 이메일을 입력해주세요.');
+        return;
+      }
       alert('사용 가능한 이메일입니다.');
-      // if (Response.data) {
-      //   setIdValid(true);
-      //   alert('사용 가능한 이메일입니다.');
-      // }
-      // else {
-      //   setIdValid(false);
-      //   alert('중복된 이메일입니다.');
-      // }
     } catch (error) {
       console.error(error);
-      // setIdValid(false);
+
       alert('중복된 이메일입니다.');
     }
   };
@@ -49,30 +46,14 @@ function Signup() {
         `${process.env.REACT_APP_SERVER}/api/check/nickname?nickname=${state.nickname}`
       );
       alert('사용 가능한 닉네임입니다.');
-      // if (Response.data) {
-      //   setNicknameValid(true);
-      //   alert('사용 가능한 닉네임입니다.');
-      // } else {
-      //   setNicknameValid(false);
-      //   alert('중복된 닉네임입니다.');
-      // }
     } catch (error) {
       console.error(error);
-      // setNicknameValid(false);
+
       alert(error);
     }
   };
 
   const handleSignup = async () => {
-    // if (!idValid) {
-    //   alert('이메일 중복을 확인해주세요');
-    //   return;
-    // }
-    // if (!nicknameValid) {
-    //   alert('닉네임 중복을 확인해주세요');
-    //   return;
-    // }
-
     try {
       await axios.post(`${process.env.REACT_APP_SERVER}/api/signup`, {
         email: state.id,
