@@ -20,10 +20,7 @@ function Write() {
   const imageSubmitHandler = (e) => {
     setImage(() => e.target.files[0]);
   };
-  // console.log('title', title);
-  // console.log('content', content);
-  // console.log('formData', ...formData);
-  // navigate
+  
   const navigate = useNavigate();
 
   // 취소

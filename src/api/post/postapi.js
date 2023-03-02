@@ -51,20 +51,18 @@ const deletePost = async (id) => {
 };
 
 // 게시물 수정
-const updatePost = async ({ id, inputTitle, inputContent, image }) => {
+const updatePost = async ({ id, formData }) => {
   // 받아올 때도 중괄호
-  await axios.put(
+  await axios.patch(
     `${process.env.REACT_APP_SERVER}/api/posts/${id}`,
     {
-      title: `${inputTitle}`,
-      content: `${inputContent}`,
-      // image: image,
+      formData
     },
     // header
     {
-      // 'Content-Type': 'multipart/form-data',
       headers: {
         authorization: `Bearer ${getCookie('userToken')}`,
+        'Content-Type': 'multipart/form-data',
       },
     }
   );

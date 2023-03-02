@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Form, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   deletePost,
@@ -115,8 +115,13 @@ function Detail() {
   const saveButton = (id, inputTitle, inputContent, image) => {
     if (inputTitle !== '' && inputContent !== '') {
       if (window.confirm('정말 수정하시겠습니까?') === true) {
+        const formData = new FormData();
+        formData.append('image', image)
+        formData.append('title', inputTitle)
+        formData.append('content', inputContent)
+
         setContentState(false);
-        updatemutation.mutate({ id, inputTitle, inputContent, image });
+        updatemutation.mutate({id, formData});
       } else {
         return;
       }
@@ -127,11 +132,6 @@ function Detail() {
 
   const imageSubmitHandler = (e) => {
     setImage(() => e.target.files[0]);
-    const formData = new FormData();
-    formData.append('image', image);
-    console.log('formData', formData);
-    console.log('inside image', image);
-    for (const keyValue of formData) console.log('keyValue', keyValue);
   };
 
   if (isLoading) return <h1>로딩중</h1>;
