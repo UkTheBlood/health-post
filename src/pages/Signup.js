@@ -9,29 +9,31 @@ function Signup() {
     nickname: '', // 초기값을 빈 문자열로 변경
   });
 
-  const [idValid, setIdValid] = useState(false);
-  const [nicknameValid, setNicknameValid] = useState(false);
+  // const [idValid, setIdValid] = useState(false);
+  // const [nicknameValid, setNicknameValid] = useState(false);
 
   const handleIdCheck = async () => {
     if (!state.id) {
       alert('이메일을 입력해주세요.');
       return;
     }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailRegex.test(state.id) === false) {
+      alert('유효한 이메일을 입력해주세요.');
+      return;
+    }
+
+    // 정규표현식으로 체크->axios
 
     try {
-      await axios.get(
-        `${process.env.REACT_APP_SERVER}/api/check/email?email=${state.id}`
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER}/api/check?email=${state.id}`
       );
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (emailRegex.test(state.id) === false) {
-        alert('유효한 이메일을 입력해주세요.');
-        return;
-      }
-      alert('사용 가능한 이메일입니다.');
+      // console.log(response.data.message);
+      alert(response.data.message);
     } catch (error) {
-      console.error(error);
-
-      alert('중복된 이메일입니다.');
+      // console.log(error.response);
+      alert(error.response.data.message);
     }
   };
 
@@ -42,14 +44,14 @@ function Signup() {
     }
 
     try {
-      await axios.get(
-        `${process.env.REACT_APP_SERVER}/api/check/nickname?nickname=${state.nickname}`
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER}/api/check?nickname=${state.nickname}`
       );
-      alert('사용 가능한 닉네임입니다.');
+      console.log(response.data);
+      alert(response.data.message);
     } catch (error) {
-      console.error(error);
-
-      alert(error);
+      // console.log(error.response.data);
+      alert(error.response.data.message);
     }
   };
 
@@ -62,7 +64,7 @@ function Signup() {
       });
       alert('회원가입 성공!');
     } catch (error) {
-      console.error(error);
+      alert(error.response.data);
       // 에러메시지
     }
   };
