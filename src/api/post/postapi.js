@@ -17,6 +17,7 @@ const addPost = async (newPost) => {
     // 'Content-Type': 'multipart/form-data',
     headers: {
       authorization: `Bearer ${getCookie('userToken')}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
 };

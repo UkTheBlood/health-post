@@ -8,10 +8,14 @@ import {
   getComments,
   updateComment,
 } from '../api/comment/commentapi';
+import { getUser } from '../until/localstorage';
 
 function Comments() {
   const params = useParams(); // props로 data를 내려주면 안 될듯
   // params => {id : 1}
+
+  const userInfo = getUser();
+  // console.log(userInfo);
 
   const { isLoading, isError, data } = useQuery('comments', () => {
     return getComments(params.id);
@@ -116,7 +120,9 @@ function Comments() {
 
   if (isLoading) return <h1>로딩중</h1>;
   if (isError) return <h1>에러 발생</h1>;
-  console.log(data);
+
+  // console.log('comments data', data);
+  const isSameId = userInfo.userid && data.userId;
 
   return (
     <StDivWrap>
@@ -140,16 +146,20 @@ function Comments() {
               {commentState !== comments.commentId ? (
                 <>
                   <StPComment>{comments.comment}</StPComment>
-                  <StBtnUpdateComment
-                    onClick={() => commentToggleHandler(comments.commentId)}
-                  >
-                    수정
-                  </StBtnUpdateComment>
-                  <StBtnUpdateComment
-                    onClick={() => deleteCommentButton(comments.commentId)}
-                  >
-                    삭제
-                  </StBtnUpdateComment>
+                  {userInfo.userId === comments.userId ? (
+                    <>
+                      <StBtnUpdateComment
+                        onClick={() => commentToggleHandler(comments.commentId)}
+                      >
+                        수정
+                      </StBtnUpdateComment>
+                      <StBtnUpdateComment
+                        onClick={() => deleteCommentButton(comments.commentId)}
+                      >
+                        삭제
+                      </StBtnUpdateComment>
+                    </>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -185,11 +195,11 @@ const StDivWrap = styled.div`
   width: 600px;
   margin: 0px auto 400px auto;
   padding: 20px;
-  border: 2px solid #626FC2;
+  border: 2px solid #626fc2;
   border-radius: 10px;
 `;
 const StDivAddcomment = styled.div`
-  background-color: #5D93AB;
+  background-color: #5d93ab;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -209,7 +219,7 @@ const StBtnAddcomment = styled.button`
   height: 30px;
   border-radius: 10px;
   border: none;
-  background-color: #9EB3C2;
+  background-color: #9eb3c2;
 `;
 const StDivCommentsWrap = styled.div`
   margin-top: 20px;
@@ -231,7 +241,7 @@ const StPComment = styled.p`
 const StBtnUpdateComment = styled.button`
   width: 70px;
   height: 30px;
-  background-color: #1C7293;
+  background-color: #1c7293;
   border: none;
   border-radius: 10px;
   margin-left: auto;
@@ -240,7 +250,7 @@ const StBtnUpdateComment = styled.button`
   color: white;
   :hover {
     cursor: pointer;
-    background-color: #1E2554;
+    background-color: #1e2554;
     color: #e8d5c4;
   }
 `;

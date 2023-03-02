@@ -9,6 +9,7 @@ import {
   likeUp,
 } from '../api/post/postapi';
 import Comments from '../coponents/Comments';
+import { getUser } from '../until/localstorage';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
@@ -28,6 +29,9 @@ function Detail() {
   const onChangeTextareaContentHandler = (e) => {
     setInputContent(e.target.value);
   };
+
+  const userInfo = getUser();
+  // console.log("userInfo", userInfo)
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
   const { isLoading, isError, data } = useQuery(
@@ -133,6 +137,8 @@ function Detail() {
 
   if (isError) return <h1>에러 발생</h1>;
 
+  console.log("data", data.fileUrl)
+
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
 
   return (
@@ -157,7 +163,7 @@ function Detail() {
               <hr />
               <StDivContent>
                 <StPContent>
-                  {/* <img src=`${data.image}`></img> */}
+                  <img src={data.fileUrl}></img>
                   {data.content}
                 </StPContent>
               </StDivContent>
@@ -240,7 +246,7 @@ const StDivContentWrap = styled.div`
   margin: 40px auto;
   padding: 10px 20px;
   border-radius: 10px;
-  border: 3px solid #626FC2;
+  border: 3px solid #626fc2;
 `;
 const StDivWriter = styled.div`
   display: flex;
@@ -288,7 +294,7 @@ const StBtnView = styled.button`
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #5D93AB;
+  background-color: #5d93ab;
   color: white;
 `;
 const StBtnPostUpdate = styled.button`
@@ -326,15 +332,17 @@ const StBtnCancle = styled.button`
   margin-right: 30px;
   border: none;
   border-radius: 10px;
-  background-color: #609966;
+  background-color: #9eb3c2;
+  color: white;
 `;
 const StBtnSave = styled.button`
   width: 80px;
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #609966;
+  background-color: #9eb3c2;
   margin: 20px 20px 10px auto;
+  color: white;
 `;
 const StPLike = styled.p`
   display: inline;

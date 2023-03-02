@@ -21,11 +21,20 @@ function Write() {
     setImage(() => e.target.files[0]);
     const formData = new FormData();
     formData.append('image', image);
-    console.log('formData', formData);
-    console.log('inside image', image);
+    formData.append('title', new Blob([JSON.stringify(title), {
+      type: "multipart/formdata"
+    }]));
+    formData.append('content', new Blob([JSON.stringify(content), {
+      type: "multipart/formdata"
+    }]));
+    // console.log('formData', formData);
+    // console.log('inside image', image);
+    
     for (const keyValue of formData) console.log('keyValue', keyValue);
   };
   console.log('outside image', image);
+  console.log('content', content);
+  console.log('title', title)
 
   // navigate
   const navigate = useNavigate();
