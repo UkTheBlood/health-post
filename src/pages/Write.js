@@ -16,25 +16,30 @@ function Write() {
     setContent(e.target.value);
   };
 
+  const formData = new FormData();
+
   // 이미지 첨부 input onChange 함수
   const imageSubmitHandler = (e) => {
     setImage(() => e.target.files[0]);
-    const formData = new FormData();
     formData.append('image', image);
-    formData.append('title', new Blob([JSON.stringify(title), {
-      type: "multipart/formdata"
-    }]));
-    formData.append('content', new Blob([JSON.stringify(content), {
-      type: "multipart/formdata"
-    }]));
-    // console.log('formData', formData);
+    formData.append(
+      'title', title
+      // new Blob([JSON.stringify(title)], {
+      //   type: 'application/json',
+      // })
+    );
+    formData.append(
+      'content', content
+      // new Blob([JSON.stringify(content)], {
+      //   type: 'application/json',
+      // })
+    );
+    console.log('formData', formData.get('image'));
     // console.log('inside image', image);
-    
+    // console.log(e.target.files[0]);
+
     for (const keyValue of formData) console.log('keyValue', keyValue);
   };
-  console.log('outside image', image);
-  console.log('content', content);
-  console.log('title', title)
 
   // navigate
   const navigate = useNavigate();
@@ -56,7 +61,10 @@ function Write() {
     },
     onError: (error) => {
       // 콜백함수 인자 : error 인자가 있음
-      console.log(error);
+      console.log();
+      if (error.response.status === 401) {
+        alert('게시물 작성에 실패했습니다. 회원가입 후 이용 가능합니다');
+      }
     },
   });
 
@@ -65,17 +73,11 @@ function Write() {
   // 추가 버튼
   const addButton = () => {
     if (title !== '' && content !== '') {
-      const newPost = {
-        title,
-        content,
-        image,
-      };
-      alert('게시글이 추가되었습니다!');
-
       setTitle('');
       setContent('');
       navigate('/');
-      mutation.mutate(newPost);
+      mutation.mutate(formData);
+      alert('홈 화면으로 돌아갑니다');
     } else {
       alert('제목과 내용을 모두 입력해주세요!!');
     }
@@ -91,28 +93,37 @@ function Write() {
       <div>
         <p>게시글 닉네임 : 작성자</p>
         <StPText>게시글 제목</StPText>
-        <StInputTitle
-          onChange={onChangeTitleHandler}
-          value={title}
-          type="text"
-          placeholder="게시글 제목을 입력해주세요"
-        />
-        <br />
-        <StPText>게시글 내용</StPText>
-        <StTextContent
-          onChange={onChangeContentHandler}
-          value={content}
-          type="text"
-          placeholder="게시글 내용을 입력해주세요"
-        />
-        {/* 체인지인지 클릭인지 */}
-        <StLabelImg htmlFor="contained-button-file" className="m-0 w-100">
-          <StInputImg onChange={imageSubmitHandler} id="file" type="file" />
-        </StLabelImg>
-        <StDivSave>
-          <StBtnCancel onClick={cancelButton}>취소</StBtnCancel>
-          <StBtnSave onClick={addButton}>저장</StBtnSave>
-        </StDivSave>
+        {/* <form encType='multipart/form-data'> */}
+          <StInputTitle
+            name="title"
+            onChange={onChangeTitleHandler}
+            value={title}
+            type="text"
+            placeholder="게시글 제목을 입력해주세요"
+          />
+          <br />
+          <StPText>게시글 내용</StPText>
+          <StTextContent
+            name="content"
+            onChange={onChangeContentHandler}
+            value={content}
+            type="text"
+            placeholder="게시글 내용을 입력해주세요"
+          />
+          {/* 체인지인지 클릭인지 */}
+          <StLabelImg htmlFor="contained-button-file" className="m-0 w-100">
+            <StInputImg
+              name="image"
+              onChange={imageSubmitHandler}
+              id="file"
+              type="file"
+            />
+          </StLabelImg>
+          <StDivSave>
+            <StBtnCancel onClick={cancelButton}>취소</StBtnCancel>
+            <StBtnSave onClick={addButton}>저장</StBtnSave>
+          </StDivSave>
+        {/* </form> */}
       </div>
     </StDivWrap>
   );
@@ -177,11 +188,11 @@ const StInputImg = styled.input`
   color: #999999;
 `;
 const StLabelImg = styled.label`
-display: inline-block;
-padding: 10px 20px;
-color: #fff;
-vertical-align: middle;
-cursor: pointer;
-height: 40px;
-margin-left: 10px;
-`
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  vertical-align: middle;
+  cursor: pointer;
+  height: 40px;
+  margin-left: 10px;
+`;

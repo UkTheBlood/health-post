@@ -12,9 +12,8 @@ export const instance = axios.create({
 });
 
 // 게시물 추가
-const addPost = async (newPost) => {
-  await axios.post(`${process.env.REACT_APP_SERVER}/api/posts`, newPost, {
-    // 'Content-Type': 'multipart/form-data',
+const addPost = async (formData) => {
+  await axios.post(`${process.env.REACT_APP_SERVER}/api/posts`, formData, {
     headers: {
       authorization: `Bearer ${getCookie('userToken')}`,
       'Content-Type': 'multipart/form-data',
