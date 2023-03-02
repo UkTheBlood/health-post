@@ -10,6 +10,8 @@ import {
 } from '../api/post/postapi';
 import Comments from '../coponents/Comments';
 import { getUser } from '../until/localstorage';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FcComments } from "react-icons/fc";
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
@@ -137,8 +139,6 @@ function Detail() {
 
   if (isError) return <h1>에러 발생</h1>;
 
-  console.log("data", data.fileUrl)
-
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
 
   return (
@@ -169,19 +169,22 @@ function Detail() {
               </StDivContent>
               <StDivComment>
                 <StPCommentsCount>
-                  댓글 수 : {data.commentsCount}
+                  {/* <StPCommentIcon>
+                    <FcComments />
+                  </StPCommentIcon> */}
+                  댓글 : {data.commentsCount}
                 </StPCommentsCount>
                 {data.likeState === false ? (
                   <>
                     <StPLike onClick={() => onClickLikeHandler(param.id)}>
-                      🤍
+                      <FaRegHeart />
                     </StPLike>
                     좋아요 : {data.likesCount}
                   </>
                 ) : (
                   <>
                     <StPLike onClick={() => onClickLikeHandler(param.id)}>
-                      💓{' '}
+                      <FaHeart />
                     </StPLike>
                     좋아요 : {data.likesCount}
                   </>
@@ -348,7 +351,14 @@ const StPLike = styled.p`
   display: inline;
   width: 100px;
   margin-left: auto;
+  margin-right: 10px;
+  color: red;
 `;
+const StPCommentIcon = styled.p`
+  display: inline;
+  margin-right: 10px;
+  font-size: 22px;
+`
 const StPCommentsCount = styled.p`
   margin-right: 20px;
 `;
