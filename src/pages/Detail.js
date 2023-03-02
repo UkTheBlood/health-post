@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Form, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   deletePost,
@@ -9,6 +9,8 @@ import {
   likeUp,
 } from '../api/post/postapi';
 import Comments from '../coponents/Comments';
+import { getUser } from '../until/localstorage';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 // React => useMutation => await Axios => BE(Error) => await Axios => useMutation
 
@@ -28,6 +30,9 @@ function Detail() {
   const onChangeTextareaContentHandler = (e) => {
     setInputContent(e.target.value);
   };
+
+  const userInfo = getUser();
+  // console.log("userInfo", userInfo)
 
   // getPosts를 사용해 data(posts 배열)를 받아온다
   const { isLoading, isError, data } = useQuery(
@@ -110,8 +115,13 @@ function Detail() {
   const saveButton = (id, inputTitle, inputContent, image) => {
     if (inputTitle !== '' && inputContent !== '') {
       if (window.confirm('정말 수정하시겠습니까?') === true) {
+        const formData = new FormData();
+        formData.append('image', image)
+        formData.append('title', inputTitle)
+        formData.append('content', inputContent)
+
         setContentState(false);
-        updatemutation.mutate({ id, inputTitle, inputContent, image });
+        updatemutation.mutate({id, formData});
       } else {
         return;
       }
@@ -122,16 +132,13 @@ function Detail() {
 
   const imageSubmitHandler = (e) => {
     setImage(() => e.target.files[0]);
-    const formData = new FormData();
-    formData.append('image', image);
-    console.log('formData', formData);
-    console.log('inside image', image);
-    for (const keyValue of formData) console.log('keyValue', keyValue);
   };
 
   if (isLoading) return <h1>로딩중</h1>;
-
   if (isError) return <h1>에러 발생</h1>;
+
+  console.log(data.userId);
+  console.log(userInfo.userId);
 
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
 
@@ -145,37 +152,45 @@ function Detail() {
                 <StPWriter>작성자 : {data.nickname}</StPWriter>
                 <p>{datadate}</p>
               </StDivWriter>
-              <StBtnPostUpdate onClick={() => setContentState(true)}>
-                수정
-              </StBtnPostUpdate>
-              <StBtnPostUpdate onClick={() => deleteButton(data.postId)}>
-                삭제
-              </StBtnPostUpdate>
+              {data.userId === userInfo.userId ? (
+                <>
+                  <StBtnPostUpdate onClick={() => setContentState(true)}>
+                    수정
+                  </StBtnPostUpdate>
+                  <StBtnPostUpdate onClick={() => deleteButton(data.postId)}>
+                    삭제
+                  </StBtnPostUpdate>
+                </>
+              ) : null}
+
               <StDivTitle>
                 <StH1Title>{data.title}</StH1Title>
               </StDivTitle>
               <hr />
               <StDivContent>
                 <StPContent>
-                  {/* <img src=`${data.image}`></img> */}
+                  <StImg src={data.fileUrl}></StImg>
                   {data.content}
                 </StPContent>
               </StDivContent>
               <StDivComment>
                 <StPCommentsCount>
-                  댓글 수 : {data.commentsCount}
+                  {/* <StPCommentIcon>
+                    <FcComments />
+                  </StPCommentIcon> */}
+                  댓글 : {data.commentsCount}
                 </StPCommentsCount>
                 {data.likeState === false ? (
                   <>
                     <StPLike onClick={() => onClickLikeHandler(param.id)}>
-                      🤍
+                      <FaRegHeart />
                     </StPLike>
                     좋아요 : {data.likesCount}
                   </>
                 ) : (
                   <>
                     <StPLike onClick={() => onClickLikeHandler(param.id)}>
-                      💓{' '}
+                      <FaHeart />
                     </StPLike>
                     좋아요 : {data.likesCount}
                   </>
@@ -240,7 +255,7 @@ const StDivContentWrap = styled.div`
   margin: 40px auto;
   padding: 10px 20px;
   border-radius: 10px;
-  border: 3px solid #626FC2;
+  border: 3px solid #626fc2;
 `;
 const StDivWriter = styled.div`
   display: flex;
@@ -273,6 +288,11 @@ const StH1Title = styled.p`
 `;
 const StPContent = styled.p`
   line-height: 20px;
+  display: flex;
+`;
+const StImg = styled.img`
+  width: 150px;
+  height: 150px;
 `;
 const StDivComment = styled.div`
   text-align: right;
@@ -288,7 +308,7 @@ const StBtnView = styled.button`
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #5D93AB;
+  background-color: #5d93ab;
   color: white;
 `;
 const StBtnPostUpdate = styled.button`
@@ -303,7 +323,6 @@ const StBtnPostUpdate = styled.button`
     color: black;
   }
 `;
-
 const StInputTitle = styled.input`
   width: 520px;
   height: 18px;
@@ -326,20 +345,29 @@ const StBtnCancle = styled.button`
   margin-right: 30px;
   border: none;
   border-radius: 10px;
-  background-color: #609966;
+  background-color: #9eb3c2;
+  color: white;
 `;
 const StBtnSave = styled.button`
   width: 80px;
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #609966;
+  background-color: #9eb3c2;
   margin: 20px 20px 10px auto;
+  color: white;
 `;
 const StPLike = styled.p`
   display: inline;
   width: 100px;
   margin-left: auto;
+  margin-right: 10px;
+  color: red;
+`;
+const StPCommentIcon = styled.p`
+  display: inline;
+  margin-right: 10px;
+  font-size: 22px;
 `;
 const StPCommentsCount = styled.p`
   margin-right: 20px;

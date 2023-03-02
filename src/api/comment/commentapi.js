@@ -18,6 +18,7 @@ export const getComments = async (id) => {
 
 // 댓글 추가 기능
 export const addComment = async ({ id, newContent }) => {
+  console.log("id", id, "newContent", newContent)
   await axios.post(
     `${process.env.REACT_APP_SERVER}/api/posts/${id}/comments`,
     newContent,
