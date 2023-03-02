@@ -7,7 +7,7 @@ import { addPost, getPosts } from '../api/post/postapi';
 function Write() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
 
   const onChangeTitleHandler = (e) => {
     setTitle(e.target.value);
@@ -20,7 +20,7 @@ function Write() {
   const imageSubmitHandler = (e) => {
     setImage(() => e.target.files[0]);
   };
-  
+
   const navigate = useNavigate();
 
   // 취소
@@ -53,30 +53,41 @@ function Write() {
   const addButton = () => {
     if (title !== '' && content !== '') {
       const formData = new FormData();
-      formData.append('image', image);
-      formData.append(
-        'title',
-        title
-        // new Blob([JSON.stringify(title)], {
-        //   type: 'application/json',
-        // })
-      );
-      formData.append(
-        'content',
-        content
-        // new Blob([JSON.stringify(content)], {
-        //   type: 'application/json',
-        // })
-      );
-      // console.log('formData', formData.get('image'));
-      // console.log('inside image', image);
+      if (image !== null) {
+        formData.append('image', image);
+        formData.append(
+          'title',
+          title
+          // new Blob([JSON.stringify(title)], {
+          //   type: 'application/json',
+          // })
+        );
+        formData.append(
+          'content',
+          content
+          // new Blob([JSON.stringify(content)], {
+          //   type: 'application/json',
+          // })
+        );
+        // console.log('formData', formData.get('image'));
+        // console.log('inside image', image);
 
-      // for (const keyValue of formData) console.log('keyValue', keyValue);
-      setTitle('');
-      setContent('');
-      navigate('/');
-      mutation.mutate(formData);
-      alert('홈 화면으로 돌아갑니다');
+        // for (const keyValue of formData) console.log('keyValue', keyValue);
+        setTitle('');
+        setContent('');
+        navigate('/');
+        mutation.mutate(formData);
+        alert('홈 화면으로 돌아갑니다');
+      } else {
+        formData.append('title', title);
+        formData.append('content', content);
+
+        setTitle('');
+        setContent('');
+        navigate('/');
+        mutation.mutate(formData);
+        alert('홈 화면으로 돌아갑니다');
+      }
     } else {
       alert('제목과 내용을 모두 입력해주세요!!');
     }

@@ -22,7 +22,7 @@ function Detail() {
   const navigate = useNavigate();
 
   const [contentState, setContentState] = useState(false);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
 
   const onChangeInputTitleHandler = (e) => {
     setInputTitle(e.target.value);
