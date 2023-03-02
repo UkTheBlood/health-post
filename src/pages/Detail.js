@@ -116,12 +116,12 @@ function Detail() {
     if (inputTitle !== '' && inputContent !== '') {
       if (window.confirm('정말 수정하시겠습니까?') === true) {
         const formData = new FormData();
-        formData.append('image', image)
-        formData.append('title', inputTitle)
-        formData.append('content', inputContent)
+        formData.append('image', image);
+        formData.append('title', inputTitle);
+        formData.append('content', inputContent);
 
         setContentState(false);
-        updatemutation.mutate({id, formData});
+        updatemutation.mutate({ id, formData });
       } else {
         return;
       }
@@ -141,6 +141,7 @@ function Detail() {
   console.log(userInfo.userId);
 
   const datadate = new Date(data.createdAt).toLocaleDateString('en-us');
+  console.log(data);
 
   return (
     <>
@@ -169,7 +170,10 @@ function Detail() {
               <hr />
               <StDivContent>
                 <StPContent>
-                  <StImg src={data.fileUrl}></StImg>
+                  {data.fileUrl !== null ? (
+                    <StImg src={data.fileUrl}></StImg>
+                  ) : null}
+
                   {data.content}
                 </StPContent>
               </StDivContent>
