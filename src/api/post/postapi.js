@@ -1,7 +1,6 @@
 // 게시물 조회, 수정, 삭제, 등록 api 모음
 
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../until/cookie';
 
 export const instance = axios.create({
@@ -12,11 +11,11 @@ export const instance = axios.create({
 });
 
 // 게시물 추가
-const addPost = async (newPost) => {
-  await axios.post(`${process.env.REACT_APP_SERVER}/api/posts`, newPost, {
-    // 'Content-Type': 'multipart/form-data',
+const addPost = async (formData) => {
+  await axios.post(`${process.env.REACT_APP_SERVER}/api/posts`, formData, {
     headers: {
       authorization: `Bearer ${getCookie('userToken')}`,
+      'Content-Type': 'multipart/form-data',
     },
   });
 };
@@ -52,21 +51,18 @@ const deletePost = async (id) => {
 };
 
 // 게시물 수정
-const updatePost = async ({ id, inputTitle, inputContent, image }) => {
+const updatePost = async ({ id, formData }) => {
   // 받아올 때도 중괄호
-  console.log(inputContent, inputTitle);
-  await axios.put(
+  await axios.patch(
     `${process.env.REACT_APP_SERVER}/api/posts/${id}`,
     {
-      title: `${inputTitle}`,
-      content: `${inputContent}`,
-      // image: image,
+      formData
     },
     // header
     {
-      // 'Content-Type': 'multipart/form-data',
       headers: {
         authorization: `Bearer ${getCookie('userToken')}`,
+        'Content-Type': 'multipart/form-data',
       },
     }
   );
@@ -75,7 +71,6 @@ const updatePost = async ({ id, inputTitle, inputContent, image }) => {
 // 좋아요 기능
 const likeUp = async (id) => {
   const postId = Number(id);
-  console.log(postId);
   await axios.put(
     `${process.env.REACT_APP_SERVER}/api/likes/posts/${postId}`,
     {},
